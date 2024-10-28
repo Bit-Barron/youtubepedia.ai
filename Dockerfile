@@ -1,47 +1,28 @@
-# syntax = docker/dockerfile:1
+FROM node:20-alpine AS deps
 
-# Adjust NODE_VERSION as desired
-ARG NODE_VERSION=20.10.0
-FROM node:${NODE_VERSION}-slim as base
-
-LABEL runtime="Node.js"
-
-# Node.js app lives here
 WORKDIR /app
 
-# Set production environment
-ENV NODE_ENV="production"
+COPY package.json ./
+COPY prisma ./prisma
 
-# Install pnpm
-ARG PNPM_VERSION=8.15.1
-RUN npm install -g pnpm@$PNPM_VERSION
+RUN npm install
 
+# 
+FROM node:20-alpine AS builder
+WORKDIR /app
 
-# Throw-away build stage to reduce size of final image
-FROM base as build
+COPY . .
+COPY --from=deps /app/node_modules ./node_modules
 
-# Install packages needed to build node modules
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python-is-python3
+RUN npm run build
 
-# Install node modules
-COPY --link .npmrc package.json ./
-RUN pnpm install --prod=false
+# 
+FROM node:20-alpine AS prod
 
-# Copy application code
-COPY --link . .
+WORKDIR /app
 
-# Build application
-RUN pnpm run build
+COPY --from=builder /app/.svelte-kit ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
 
-# Remove development dependencies
-RUN pnpm prune --prod
-
-# Final stage for app image
-FROM base
-
-# Copy built application
-COPY --from=build /app /app
-
-EXPOSE 3000
-CMD [ "node", "build/index.js" ]
+CMD ["npm", "run", "preview"]
