@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
@@ -11,21 +12,23 @@
 		<Card.Description>Enter your information to create an account</Card.Description>
 	</Card.Header>
 	<Card.Content>
-		<div class="grid gap-4">
-			<div class="grid gap-2">
-				<Label for="email">Email</Label>
-				<Input id="email" type="email" placeholder="m@example.com" required />
+		<form method="post" use:enhance>
+			<div class="grid gap-4">
+				<div class="grid gap-2">
+					<Label for="email">Email</Label>
+					<Input id="email" type="email" placeholder="m@example.com" required />
+				</div>
+				<div class="grid gap-2">
+					<Label for="password">Password</Label>
+					<Input id="password" type="password" />
+				</div>
+				<Button type="submit" class="w-full">Create an account</Button>
+				<Button variant="outline" class="w-full">Sign up with GitHub</Button>
 			</div>
-			<div class="grid gap-2">
-				<Label for="password">Password</Label>
-				<Input id="password" type="password" />
+			<div class="mt-4 text-center text-sm">
+				Already have an account?
+				<a href="/login" class="underline"> Sign in </a>
 			</div>
-			<Button type="submit" class="w-full">Create an account</Button>
-			<Button variant="outline" class="w-full">Sign up with GitHub</Button>
-		</div>
-		<div class="mt-4 text-center text-sm">
-			Already have an account?
-			<a href="/login" class="underline"> Sign in </a>
-		</div>
-	</Card.Content>
+		</form></Card.Content
+	>
 </Card.Root>
