@@ -5,47 +5,28 @@ import prisma from '../../../utils/prisma';
 
 export const actions: Actions = {
 	default: async ({ request, cookies }) => {
-		try {
-			const formData = await request.formData();
-			const { email, password } = Object.fromEntries(formData) as Record<string, string>;
-
-			if (!email || !password) {
-				return fail(400, {
-					message: 'Email and password are required'
-				});
+		const { email, password } = Object.fromEntries(await request.formData()) as Record<
+			string,
+			string
+		>;
+		const user = await prisma.user.findUnique({
+			where: {
+				email: email
 			}
-
-			const user = await prisma.user.findUnique({
-				where: { email }
-			});
-
-			const validPassword = user ? await new Argon2id().verify(user.password, password) : false;
-
-			if (!user || !validPassword) {
-				return fail(400, {
-					message: 'Incorrect username or password'
-				});
-			}
-
-			const session = await lucia.createSession(user.id, []);
-			const sessionCookie = lucia.createSessionCookie(session.id);
-
-			cookies.set(sessionCookie.name, sessionCookie.value, {
-				path: '/',
-				...sessionCookie.attributes
-			});
-
-			throw redirect(302, '/');
-		} catch (error) {
-			console.error('Login error:', error);
-
-			if (error instanceof Response) {
-				throw error;
-			}
-
-			return fail(500, {
-				message: 'An error occurred during login'
-			});
+		});
+		if (!user) {
+			return fail(400, { message: 'Incorrect username or password' });
 		}
+		const validPassword = await new Argon2id().verify(user.password, password);
+		if (!validPassword) {
+			return fail(400, { message: 'Incorrect username or password' });
+		}
+		const session = await lucia.createSession(user.id, []);
+		const sessionCookie = lucia.createSessionCookie(session.id);
+		cookies.set(sessionCookie.name, sessionCookie.value, {
+			path: '.',
+			...sessionCookie.attributes
+		});
+		redirect(302, '/');
 	}
 };
