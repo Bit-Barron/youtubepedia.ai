@@ -1,16 +1,24 @@
-FROM node:22-alpine AS builder
-WORKDIR /app
-COPY package*.json .
-RUN npm ci
-COPY . .
-RUN npm run build
-RUN npm prune --production
+# Step 1: Build the application
+FROM oven/bun AS builder
 
-FROM node:22-alpine
+# Set the working directory in the container
 WORKDIR /app
-COPY --from=builder /app/build build/
-COPY --from=builder /app/node_modules node_modules/
-COPY package.json .
+
+# Copy all the application files to the container
+COPY . .
+
+# Run your build process
+RUN bun i
+RUN bun run build
+
+# Step 2: Create a smaller image for running the application
+FROM oven/bun
+
+# Copy only the necessary files from the builder image to the final image
+COPY --from=builder /app/build .
+
+# Expose the port the application will run on
 EXPOSE 3000
-ENV NODE_ENV=production
-CMD [ "node", "build" ]
+
+#Start the BUN server
+CMD ["bun", "run", "start"]
