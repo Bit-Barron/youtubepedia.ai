@@ -2,6 +2,17 @@ import { lucia } from '$lib/server/auth.js';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { Argon2id } from 'oslo/password';
 import prisma from '../../../utils/prisma';
+import type { PageServerLoad } from './$types';
+
+export const load: PageServerLoad = async ({ locals }) => {
+	if (locals.user) {
+		throw redirect(302, '/');
+	}
+
+	return {
+		user: locals.user
+	};
+};
 
 export const actions: Actions = {
 	default: async ({ request, cookies }) => {
