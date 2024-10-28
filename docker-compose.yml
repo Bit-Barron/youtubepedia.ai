@@ -1,0 +1,21 @@
+services:
+  youtubepedia:
+    container_name: youtubepedia
+    restart: always
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      target: prod
+    networks:
+      - proxy
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.youtubepedia.rule=Host(`youtubepedia.ai`)'
+      - 'traefik.http.routers.youtubepedia.entrypoints=websecure'
+      - 'traefik.http.routers.youtubepedia.tls.certresolver=letsencrypt'
+      - 'traefik.http.services.youtubepedia.loadbalancer.server.port=3000'
+
+networks:
+  proxy:
+    external: false
+    name: proxy
