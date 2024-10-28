@@ -37,6 +37,9 @@
 		"vite": "^5.0.3"
 	},
 	"dependencies": {
-		"mode-watcher": "^0.4.1"
+		"@prisma/client": "^5.21.1",
+		"lucia-auth": "^1.8.0",
+		"mode-watcher": "^0.4.1",
+		"prisma": "^5.21.1"
 	}
 }
