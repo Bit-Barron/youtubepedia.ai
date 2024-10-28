@@ -1,27 +1,16 @@
-FROM node:20-alpine AS deps
-
+FROM node:22-alpine AS builder
 WORKDIR /app
-
-COPY package.json ./
-
-RUN npm install
-
-# 
-FROM node:20-alpine AS builder
-WORKDIR /app
-
+COPY package*.json .
+RUN npm ci
 COPY . .
-COPY --from=deps /app/node_modules ./node_modules
-
 RUN npm run build
+RUN npm prune --production
 
-# 
-FROM node:20-alpine AS prod
-
+FROM node:22-alpine
 WORKDIR /app
-
-COPY --from=builder /app/.svelte-kit ./.next
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
-
-CMD ["npm", "run", "preview", "--", "--host"]
+COPY --from=builder /app/build build/
+COPY --from=builder /app/node_modules node_modules/
+COPY package.json .
+EXPOSE 3000
+ENV NODE_ENV=production
+CMD [ "node", "build" ]
