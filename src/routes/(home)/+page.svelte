@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { fade, fly } from 'svelte/transition';
 	import { Search } from 'lucide-svelte';
 	import Navbar from '$lib/components/container/navbar/navbar.svelte';
@@ -11,6 +11,10 @@
 		'What are the health benefits of green tea?',
 		'Summarize https://www.youtube.com/watch?v=ms6Kxcdcsbc'
 	];
+
+	export let data;
+
+	console.log(data);
 </script>
 
 <div class="min-h-screen bg-gradient-to-br font-sans text-white">
