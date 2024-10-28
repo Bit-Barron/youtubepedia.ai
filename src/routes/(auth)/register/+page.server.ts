@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { generateId } from 'lucia';
 import { Argon2id } from 'oslo/password';
 import { lucia } from '$lib/server/auth.js';
-import { redirect } from '@sveltejs/kit';
+import { redirect, type Actions } from '@sveltejs/kit';
 import prisma from '../../../utils/prisma';
 
 export const actions = {
-	default: async ({ request, cookies }: any) => {
+	default: async ({ request, cookies }) => {
 		const data = await request.formData();
 
 		console.log(data);
@@ -28,4 +27,4 @@ export const actions = {
 		});
 		redirect(302, '/');
 	}
-};
+} satisfies Actions;
