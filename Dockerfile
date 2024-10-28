@@ -1,24 +1,41 @@
-# Step 1: Build the application
-FROM oven/bun AS builder
+# Build stage
+FROM node:20-alpine AS builder
 
-# Set the working directory in the container
 WORKDIR /app
 
-# Copy all the application files to the container
+# Install pnpm
+RUN npm install -g pnpm
+
+# Copy package files
+COPY package.json pnpm-lock.yaml ./
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile
+
+# Copy source code
 COPY . .
 
-# Run your build process
-RUN bun i
-RUN bun run build
+# Build the application
+RUN pnpm build
 
-# Step 2: Create a smaller image for running the application
-FROM oven/bun
+# Production stage
+FROM node:20-alpine AS production
 
-# Copy only the necessary files from the builder image to the final image
-COPY --from=builder /app/build .
+WORKDIR /app
 
-# Expose the port the application will run on
+# Install pnpm
+RUN npm install -g pnpm
+
+# Copy built assets from builder
+COPY --from=builder /app/build ./build
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/pnpm-lock.yaml ./
+
+# Install production dependencies only
+RUN pnpm install --prod --frozen-lockfile
+
+# Expose the port the app runs on
 EXPOSE 3000
 
-#Start the BUN server
-CMD ["bun", "run", "start"]
+# Start the application
+CMD ["node", "build"]
