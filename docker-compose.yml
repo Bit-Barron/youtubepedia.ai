@@ -3,7 +3,7 @@ services:
     container_name: youtubepedia
     restart: always
     build:
-      context: web/
+      context: ./
       dockerfile: Dockerfile
     networks:
       - proxy
