@@ -19,8 +19,6 @@ export const actions: Actions = {
 				where: { email }
 			});
 
-			console.log(user);
-
 			const validPassword = user ? await new Argon2id().verify(user.password, password) : false;
 
 			if (!user || !validPassword) {

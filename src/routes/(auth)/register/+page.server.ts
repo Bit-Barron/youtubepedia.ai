@@ -12,9 +12,9 @@ export const actions = {
 			const data = Object.fromEntries(formData) as Record<string, string>;
 
 			const result = loginSchema.safeParse(data);
-
 			if (!result.success) {
 				return fail(400, {
+					success: false,
 					message: 'Validation failed',
 					errors: result.error.flatten().fieldErrors,
 					data: { email: data.email }
@@ -29,8 +29,11 @@ export const actions = {
 
 			if (existingUser) {
 				return fail(400, {
+					success: false,
 					message: 'Email already registered',
-					errors: { email: ['Email already in use'] },
+					errors: {
+						email: ['Email already in use']
+					},
 					data: { email }
 				});
 			}
@@ -63,8 +66,11 @@ export const actions = {
 			}
 
 			return fail(500, {
+				success: false,
 				message: 'An error occurred during registration',
-				errors: { server: ['Internal server error'] }
+				errors: {
+					server: ['Internal server error']
+				}
 			});
 		}
 	}
