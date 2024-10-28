@@ -5,7 +5,6 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-      target: prod
     networks:
       - proxy
     labels:
@@ -14,7 +13,6 @@ services:
       - 'traefik.http.routers.youtubepedia.entrypoints=websecure'
       - 'traefik.http.routers.youtubepedia.tls.certresolver=letsencrypt'
       - 'traefik.http.services.youtubepedia.loadbalancer.server.port=3000'
-
 networks:
   proxy:
     external: false
