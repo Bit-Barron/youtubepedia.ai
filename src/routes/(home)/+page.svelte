@@ -2,8 +2,6 @@
 	import { PlayCircle, Search, MessageCircle } from 'lucide-svelte';
 
 	let videoUrl = '';
-
-	export let data;
 </script>
 
 <div class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100">
