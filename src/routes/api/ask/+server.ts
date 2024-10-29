@@ -5,7 +5,7 @@ import type { RequestHandler } from './$types';
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
 const groqClient = new Groq({
-	apiKey: GROQ_API_KEY
+	apiKey: `${GROQ_API_KEY}`
 });
 
 if (!process.env.GROQ_API_KEY) {
