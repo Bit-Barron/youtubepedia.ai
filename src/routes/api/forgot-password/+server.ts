@@ -31,7 +31,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		});
 
 		await transporter.sendMail({
-			from: process.env.SMTP_USER,
+			from: 'azerabdu5@gmail.com',
 			to: email,
 			subject: 'Password Reset Request',
 			html: `
