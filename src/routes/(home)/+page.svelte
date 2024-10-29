@@ -1,5 +1,4 @@
 <script>
-	import Navbar from '$lib/components/container/navbar/navbar.svelte';
 	import { PlayCircle, Search, MessageCircle } from 'lucide-svelte';
 
 	let videoUrl = '';
@@ -8,8 +7,6 @@
 </script>
 
 <div class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100">
-	<Navbar {data} />
-
 	<main class="container mx-auto px-4 py-12">
 		<section class="mb-16 text-center">
 			<h1 class="mb-6 text-5xl font-bold text-gray-100">
