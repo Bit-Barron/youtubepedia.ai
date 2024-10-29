@@ -4,6 +4,10 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Label } from '$lib/components/ui/label/index.js';
+
+	const googleAuth = () => {
+		window.location.href = '/login/google';
+	};
 </script>
 
 <Card.Root>
@@ -27,7 +31,7 @@
 				<Input id="password" name="password" type="password" required />
 			</div>
 			<Button type="submit" class="w-full">Login</Button>
-			<Button variant="outline" class="w-full">Login with Google</Button>
+			<Button on:click={googleAuth} variant="outline" class="w-full">Login with Google</Button>
 		</form>
 		<div class="mt-4 text-center text-sm">
 			Don&apos;t have an account?

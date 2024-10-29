@@ -3,6 +3,7 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Label } from '$lib/components/ui/label/index.js';
+	import { toast } from 'svelte-sonner';
 
 	let isSubmitting = false;
 	let email = '';
@@ -19,6 +20,7 @@
 			});
 			const data = await response.json();
 			message = data.message;
+			toast.success(message);
 		} catch (error) {
 			message = 'An error occurred. Please try again.';
 		}

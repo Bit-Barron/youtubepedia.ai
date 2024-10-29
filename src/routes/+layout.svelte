@@ -6,5 +6,5 @@
 
 <ModeWatcher />
 
-<Toaster />
+<Toaster richColors position="top-right" />
 <slot></slot>

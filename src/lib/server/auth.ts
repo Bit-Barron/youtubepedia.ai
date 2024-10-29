@@ -2,6 +2,7 @@ import { Lucia } from 'lucia';
 import { dev } from '$app/environment';
 import { PrismaAdapter } from '@lucia-auth/adapter-prisma';
 import client from '../../utils/prisma';
+import { Google } from 'arctic';
 
 const adapter = new PrismaAdapter(client.session, client.user);
 
@@ -28,3 +29,13 @@ declare module 'lucia' {
 interface DatabaseUserAttributes {
 	email: string;
 }
+
+if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
+	throw new Error('Google OAuth credentials not found');
+}
+
+export const google = new Google(
+	process.env.GOOGLE_CLIENT_ID,
+	process.env.GOOGLE_CLIENT_SECRET,
+	'http://localhost:5173/login/google/callback'
+);
