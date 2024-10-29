@@ -5,6 +5,25 @@
 	import { Label } from '$lib/components/ui/label/index.js';
 
 	let isSubmitting = false;
+	let email = '';
+	let message = '';
+	let loading = false;
+
+	async function handleSubmit() {
+		loading = true;
+		try {
+			const response = await fetch('/api/forgot-password', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ email })
+			});
+			const data = await response.json();
+			message = data.message;
+		} catch (error) {
+			message = 'An error occurred. Please try again.';
+		}
+		loading = false;
+	}
 </script>
 
 <Card.Root>
@@ -15,7 +34,7 @@
 		</Card.Description>
 	</Card.Header>
 	<Card.Content>
-		<form class="grid gap-4">
+		<form class="grid gap-4" on:submit|preventDefault={handleSubmit}>
 			<div class="grid gap-2">
 				<Label for="email">Email</Label>
 				<Input id="email" type="email" placeholder="m@example.com" required />

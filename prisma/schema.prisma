@@ -18,6 +18,8 @@ model User {
   email      String @unique
   password   String
   sessions Session[]
+  resetToken String? @unique
+  resetTokenExpiry DateTime?
 }
 
 model Session {
