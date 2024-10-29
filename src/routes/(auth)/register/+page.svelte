@@ -46,7 +46,7 @@
 						alt="Google logo"
 						class="h-5 w-5"
 					/>
-					<span>Sign in with Google</span>
+					<span>Sign up with Google</span>
 				</button>
 			</div>
 		</form>

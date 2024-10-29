@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
@@ -21,6 +22,8 @@
 			const data = await response.json();
 			message = data.message;
 			toast.success(message);
+
+			return goto('/login');
 		} catch (error) {
 			message = 'An error occurred. Please try again.';
 		}
