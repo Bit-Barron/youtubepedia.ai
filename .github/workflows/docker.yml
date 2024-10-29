@@ -28,5 +28,6 @@ jobs:
           echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env
           echo GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> .env
           echo GROQ_API_KEY=${{ secrets.GROQ_API_KEY }} >> .env
+          
       - name: Docker run
         run: docker compose up -d --force-recreate --build

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { goto } from '$app/navigation';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
@@ -7,7 +8,7 @@
 	import * as Separator from '$lib/components/ui/separator/index.js';
 
 	const googleAuth = () => {
-		window.location.href = '/login/google';
+		goto('/login/googl');
 	};
 </script>
 
