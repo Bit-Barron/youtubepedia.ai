@@ -37,5 +37,5 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
 export const google = new Google(
 	process.env.GOOGLE_CLIENT_ID,
 	process.env.GOOGLE_CLIENT_SECRET,
-	'http://localhost:5173/login/google/callback'
+	'http://localhost:5173/auth/callback/google'
 );
