@@ -6,6 +6,8 @@
 	import { Separator } from '$lib/components/ui/separator';
 
 	let videoUrl = '';
+
+	const handleNewChat = async () => {};
 </script>
 
 <div class="min-h-screen">

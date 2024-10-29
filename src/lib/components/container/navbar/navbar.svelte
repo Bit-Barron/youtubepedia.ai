@@ -10,6 +10,7 @@
 		SheetTrigger
 	} from '$lib/components/ui/sheet';
 	import { Separator } from '$lib/components/ui/separator';
+	import ThemeSwitch from '$lib/components/utils/theme-switch.svelte';
 
 	export let data;
 
@@ -47,6 +48,8 @@
 		</nav>
 
 		<div class="hidden items-center space-x-4 md:flex">
+			<ThemeSwitch />
+
 			{#if data.user}
 				<span class="text-sm text-muted-foreground">{data.user.email}</span>
 				<Button variant="destructive" on:click={handleLogout}>
