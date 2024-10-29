@@ -57,7 +57,6 @@
 
 				messages = [...messages, newMessage, botMessage];
 
-				// Update localStorage
 				if (chatData) {
 					chatData.messages = messages;
 					localStorage.setItem(`chat_${$page.params.chatId}`, JSON.stringify(chatData));
@@ -69,8 +68,6 @@
 			}
 		} catch (e) {
 			error = 'Failed to get answer. Please try again.';
-		} finally {
-			loading = false;
 		}
 	}
 </script>

@@ -51,7 +51,6 @@
 
 		<div class="hidden items-center space-x-4 md:flex">
 			<ThemeProvider />
-			<LanguageToggle />
 
 			{#if data.user}
 				<span class="text-sm text-muted-foreground">{data.user.email}</span>
