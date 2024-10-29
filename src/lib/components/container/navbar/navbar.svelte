@@ -18,13 +18,22 @@
 
 <header class="flex items-center justify-between p-4">
 	<nav class="flex space-x-4">
-		<button class="flex items-center text-white transition-colors duration-200 hover:text-red-400">
-			<Home class="mr-2 h-4 w-4" /> Guide
+		<button
+			on:click={() => goto('/')}
+			class="flex items-center text-white transition-colors duration-200 hover:text-red-400"
+		>
+			<Home class="mr-2 h-4 w-4" /> Home
 		</button>
-		<button class="flex items-center text-white transition-colors duration-200 hover:text-red-400">
+		<button
+			on:click={() => goto('/pricing')}
+			class="flex items-center text-white transition-colors duration-200 hover:text-red-400"
+		>
 			<DollarSign class="mr-2 h-4 w-4" /> Pricing
 		</button>
-		<button class="flex items-center text-white transition-colors duration-200 hover:text-red-400">
+		<button
+			on:click={() => goto('/contact')}
+			class="flex items-center text-white transition-colors duration-200 hover:text-red-400"
+		>
 			<Mail class="mr-2 h-4 w-4" /> Contact
 		</button>
 	</nav>
