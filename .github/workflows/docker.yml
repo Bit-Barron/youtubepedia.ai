@@ -15,7 +15,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - name: Create env file
+        run: |
+          touch .env
+          echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
+          echo SMTP_HOST=${{ secrets.SMTP_HOST }} >> .env
+          echo SMTP_PORT=${{ secrets.SMTP_PORT }} >> .env
+          echo SMTP_USER=${{ secrets.SMTP_USER }} >> .env
+          echo SMTP_PASS=${{ secrets.SMTP_PASS }} >> .env
+          echo PUBLIC_SITE_URL=${{ secrets.PUBLIC_SITE_URL }} >> .env
+          echo SMTP_SERVICE=${{ secrets.SMTP_SERVICE }} >> .env
+          echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env
+          echo GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> .env
 
       - name: Docker run
         run: docker compose up -d --force-recreate --build
-
