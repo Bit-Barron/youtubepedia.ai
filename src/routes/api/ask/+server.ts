@@ -1,10 +1,9 @@
 import { error, json } from '@sveltejs/kit';
-import { GROQ_API_KEY } from '$env/static/private';
 import { Groq } from 'groq-sdk';
 import type { RequestHandler } from './$types';
 
 const groqClient = new Groq({
-	apiKey: GROQ_API_KEY
+	apiKey: process.env.GROQ_API_KEY
 });
 
 export const POST: RequestHandler = async ({ request }) => {
