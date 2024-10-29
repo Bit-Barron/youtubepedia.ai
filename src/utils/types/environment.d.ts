@@ -5,5 +5,6 @@ declare namespace NodeJS {
 		SMTP_USER: string;
 		SMTP_PASS: string;
 		PUBLIC_SITE_URL: string;
+		GROQ_API_KEY: string;
 	}
 }

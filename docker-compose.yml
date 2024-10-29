@@ -15,6 +15,7 @@ services:
         - SMTP_SERVICE=${SMTP_SERVICE}
         - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
         - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+        - GROQ_API_KEY=${GROQ_API_KEY}
     environment:
       - DATABASE_URL=${DATABASE_URL}
       - SMTP_HOST=${SMTP_HOST}
@@ -25,6 +26,7 @@ services:
       - SMTP_SERVICE=${SMTP_SERVICE}
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - GROQ_API_KEY=${GROQ_API_KEY}
     networks:
       - proxy
     labels:

@@ -2,6 +2,9 @@ import { error, json } from '@sveltejs/kit';
 import { Groq } from 'groq-sdk';
 import type { RequestHandler } from './$types';
 
+
+console.log(process.env.GROQ_API_KEY)
+
 const groqClient = new Groq({
 	apiKey: process.env.GROQ_API_KEY
 });
