@@ -134,7 +134,7 @@
 		<section class="mb-16 text-center">
 			<h2 class="mb-4 scroll-m-20 text-3xl font-semibold tracking-tight">Ready to Get Started?</h2>
 			<p class="mb-8 text-xl text-muted-foreground">
-				Try Youtubepediauire now and unlock a new way to interact with YouTube content!
+				Try Youtubepedia now and unlock a new way to interact with YouTube content!
 			</p>
 			<Button size="lg" variant="default">Try It For Free</Button>
 		</section>
@@ -146,7 +146,7 @@
 		<div class="container mx-auto px-4">
 			<div class="flex flex-col items-center justify-between md:flex-row">
 				<div class="mb-4 md:mb-0">
-					<h3 class="mb-2 scroll-m-20 text-2xl font-semibold tracking-tight">Youtubepediauire</h3>
+					<h3 class="mb-2 scroll-m-20 text-2xl font-semibold tracking-tight">Youtubepedia</h3>
 					<p class="text-muted-foreground">Empowering curiosity, one video at a time.</p>
 				</div>
 				<nav>
@@ -160,7 +160,7 @@
 			<Separator class="my-8" />
 			<div class="text-center">
 				<p class="text-sm text-muted-foreground">
-					&copy; {new Date().getFullYear()} Youtubepediauire. All rights reserved.
+					&copy; {new Date().getFullYear()} Youtubepedia. All rights reserved.
 				</p>
 			</div>
 		</div>
