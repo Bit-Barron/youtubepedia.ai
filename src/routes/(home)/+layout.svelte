@@ -1,7 +1,8 @@
 <script lang="ts">
-	import Navbar from '$lib/components/container/navbar/header.svelte';
+	import Header from '$lib/components/container/header.svelte';
+
 	export let data;
 </script>
 
-<Navbar {data} />
+<Header {data} />
 <slot></slot>
