@@ -13,12 +13,10 @@
 	];
 
 	export let data;
-
-	console.log(data);
 </script>
 
 <div class="min-h-screen bg-gradient-to-br font-sans text-white">
-	<Navbar />
+	<Navbar data />
 
 	<main class="container mx-auto px-4 py-16 text-center">
 		<h1 in:fly={{ y: -50, duration: 500 }} class="mb-8 text-6xl font-bold">
