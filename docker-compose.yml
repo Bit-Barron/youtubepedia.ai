@@ -6,27 +6,17 @@ services:
       context: ./
       dockerfile: Dockerfile
       args:
-        - DATABASE_URL=${DATABASE_URL}
-        - SMTP_HOST=${SMTP_HOST}
-        - SMTP_PORT=${SMTP_PORT}
-        - SMTP_USER=${SMTP_USER}
-        - SMTP_PASS=${SMTP_PASS}
-        - PUBLIC_SITE_URL=${PUBLIC_SITE_URL}
-        - SMTP_SERVICE=${SMTP_SERVICE}
-        - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
-        - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
-        - GROQ_API_KEY=${GROQ_API_KEY}
-    environment:
-      - DATABASE_URL=${DATABASE_URL}
-      - SMTP_HOST=${SMTP_HOST}
-      - SMTP_PORT=${SMTP_PORT}
-      - SMTP_USER=${SMTP_USER}
-      - SMTP_PASS=${SMTP_PASS}
-      - PUBLIC_SITE_URL=${PUBLIC_SITE_URL}
-      - SMTP_SERVICE=${SMTP_SERVICE}
-      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
-      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
-      - GROQ_API_KEY=${GROQ_API_KEY}
+        - DATABASE_URL
+        - SMTP_HOST
+        - SMTP_PORT
+        - SMTP_USER
+        - SMTP_PASS
+        - PUBLIC_SITE_URL
+        - SMTP_SERVICE
+        - GOOGLE_CLIENT_ID
+        - GOOGLE_CLIENT_SECRET
+        - GROQ_API_KEY
+    env_file: .env
     networks:
       - proxy
     labels:
@@ -35,6 +25,7 @@ services:
       - 'traefik.http.routers.youtubepedia.entrypoints=websecure'
       - 'traefik.http.routers.youtubepedia.tls.certresolver=letsencrypt'
       - 'traefik.http.services.youtubepedia.loadbalancer.server.port=3000'
+
 networks:
   proxy:
     external: false
