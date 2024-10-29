@@ -8,9 +8,6 @@ const groqClient = new Groq({
 	apiKey: `${GROQ_API_KEY}`
 });
 
-if (!process.env.GROQ_API_KEY) {
-	console.warn('Warning: GROQ_API_KEY is not set. Defaulting to a dummy key.');
-}
 
 export const POST: RequestHandler = async ({ request }) => {
 	try {
