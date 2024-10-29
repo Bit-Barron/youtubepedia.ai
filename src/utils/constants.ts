@@ -1,3 +1,5 @@
+import { Clock, MessageSquare, Youtube } from 'lucide-svelte';
+
 export const plans = [
 	{
 		name: 'Basic',
@@ -27,5 +29,23 @@ export const plans = [
 			'Dedicated account manager'
 		],
 		recommended: false
+	}
+];
+
+export const features = [
+	{
+		icon: Clock,
+		title: 'Save Time',
+		description: 'Get instant access to video transcripts without watching the entire content'
+	},
+	{
+		icon: MessageSquare,
+		title: 'Interactive Chat',
+		description: 'Ask questions and get instant answers about the video content'
+	},
+	{
+		icon: Youtube,
+		title: 'Any YouTube Video',
+		description: 'Works with any public video that has captions enabled'
 	}
 ];

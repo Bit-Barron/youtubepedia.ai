@@ -1,16 +1,10 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
-	import {
-		Card,
-		CardContent,
-		CardDescription,
-		CardHeader,
-		CardTitle
-	} from '$lib/components/ui/card';
-	import { Alert, AlertDescription } from '$lib/components/ui/alert';
-	import { AlertCircle, Loader2 } from 'lucide-svelte';
+	import { Card, CardContent } from '$lib/components/ui/card';
+	import { AlertCircle, Youtube } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
+	import { features } from '../../utils/constants';
 
 	let videoUrl = '';
 	let transcriptLoading = false;
@@ -31,7 +25,6 @@
 			}
 
 			const data = await response.json();
-
 			const chatId = Math.random().toString(36).substring(2, 15);
 
 			sessionStorage.setItem(
@@ -52,38 +45,65 @@
 	}
 </script>
 
-<div class="container mx-auto p-4">
-	<Card>
-		<CardHeader>
-			<CardTitle>YouTube Transcript Assistant</CardTitle>
-			<CardDescription>
-				Get the transcript from any YouTube video and ask questions about its content
-			</CardDescription>
-		</CardHeader>
-		<CardContent class="space-y-6">
-			<div class="flex flex-col gap-4 sm:flex-row">
-				<Input
-					type="text"
-					placeholder="Paste your YouTube video URL here..."
-					bind:value={videoUrl}
-				/>
-				<Button on:click={handleTranscript} disabled={transcriptLoading || !videoUrl}>
-					{#if transcriptLoading}
-						<Loader2 class="mr-2 h-4 w-4 animate-spin" />
-						Processing...
-					{:else}
-						Get Transcript
-					{/if}
-				</Button>
+<div class="min-h-screen bg-[#0a0f1a] text-white">
+	<div class="container mx-auto px-4">
+		<main class="py-16">
+			<div class="mb-12 text-center">
+				<div class="mb-6 inline-block rounded-full bg-red-600 p-2">
+					<Youtube class="h-8 w-8" />
+				</div>
+				<h1 class="mb-4 text-4xl font-bold">YouTube Transcript Assistant</h1>
+				<p class="mx-auto max-w-2xl text-xl text-gray-400">
+					Transform any YouTube video into an interactive conversation. Get instant access to
+					transcripts and chat about the content with AI assistance.
+				</p>
 			</div>
 
-			<Alert>
-				<AlertCircle class="h-4 w-4" />
-				<AlertDescription>
-					The video must be public and have closed captions available. After processing, you'll be
-					able to chat with an AI assistant about the video content.
-				</AlertDescription>
-			</Alert>
-		</CardContent>
-	</Card>
+			<Card class="mx-auto mb-16 max-w-2xl border-none bg-[#1a2332] shadow-lg">
+				<CardContent class="p-6">
+					<h2 class="mb-4 text-xl font-semibold">Get Started</h2>
+					<p class="mb-4 text-gray-400">Enter your YouTube video URL below to begin the analysis</p>
+					<div class="flex space-x-2">
+						<Input
+							type="text"
+							placeholder="Paste your YouTube video URL here..."
+							bind:value={videoUrl}
+							class="flex-grow border-gray-700 bg-[#0a0f1a]"
+						/>
+						<Button
+							on:click={handleTranscript}
+							disabled={transcriptLoading || !videoUrl}
+							class="bg-red-600 hover:bg-red-700"
+						>
+							{#if transcriptLoading}
+								Processing...
+							{:else}
+								Get Transcript
+							{/if}
+						</Button>
+					</div>
+					<div class="mt-4 flex items-center text-sm text-gray-400">
+						<AlertCircle class="mr-2 h-4 w-4" />
+						<p>The video must be public and have closed captions available.</p>
+					</div>
+				</CardContent>
+			</Card>
+
+			<div class="grid gap-8 md:grid-cols-3">
+				{#each features as feature}
+					<Card class="border-none bg-[#1a2332]">
+						<CardContent class="p-6">
+							<svelte:component this={feature.icon} class="mb-4 h-10 w-10 text-red-600" />
+							<h3 class="mb-2 text-xl font-semibold">{feature.title}</h3>
+							<p class="text-gray-400">{feature.description}</p>
+						</CardContent>
+					</Card>
+				{/each}
+			</div>
+		</main>
+
+		<footer class="py-8 text-center text-gray-400">
+			<p>&copy; 2024 Youtubepedia. All rights reserved.</p>
+		</footer>
+	</div>
 </div>
