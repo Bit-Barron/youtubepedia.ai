@@ -11,6 +11,8 @@
 	} from '$lib/components/ui/sheet';
 	import { Separator } from '$lib/components/ui/separator';
 	import ThemeProvider from '$lib/components/container/navbar/theme-toggle.svelte';
+	import { t, locale } from 'svelte-i18n';
+	import LanguageToggle from './navbar/language-toggle.svelte';
 
 	export let data;
 
@@ -49,6 +51,7 @@
 
 		<div class="hidden items-center space-x-4 md:flex">
 			<ThemeProvider />
+			<LanguageToggle />
 
 			{#if data.user}
 				<span class="text-sm text-muted-foreground">{data.user.email}</span>
