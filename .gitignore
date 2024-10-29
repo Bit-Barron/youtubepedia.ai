@@ -16,8 +16,5 @@ Thumbs.db
 !.env.example
 !.env.test
 
-todo.txt
-# Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
-pnpm-lock.yaml
