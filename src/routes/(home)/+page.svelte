@@ -4,10 +4,51 @@
 	import { Input } from '$lib/components/ui/input';
 	import { Card, CardHeader, CardTitle, CardContent } from '$lib/components/ui/card';
 	import { Separator } from '$lib/components/ui/separator';
+	import { Alert, AlertDescription } from '$lib/components/ui/alert';
+	import { goto } from '$app/navigation';
 
 	let videoUrl = '';
+	let loading = false;
+	let error = '';
 
-	const handleNewChat = async () => {};
+	const handleAnalyze = async () => {
+		loading = true;
+		error = '';
+		try {
+			const response = await fetch('http://localhost:5000/', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+				},
+				body: new URLSearchParams({
+					video_url: videoUrl
+				})
+			});
+
+			const data = await response.json();
+			if (data.error) {
+				error = data.error;
+			} else {
+				// Generate a unique chat ID
+				const chatId = crypto.randomUUID();
+				// Store the data in localStorage
+				localStorage.setItem(
+					`chat_${chatId}`,
+					JSON.stringify({
+						videoUrl,
+						transcript: data.transcript,
+						messages: []
+					})
+				);
+				// Redirect to chat page
+				goto(`/dashboard/chat/${chatId}`);
+			}
+		} catch (e) {
+			error = 'Failed to analyze video. Please try again.';
+		} finally {
+			loading = false;
+		}
+	};
 </script>
 
 <div class="min-h-screen">
@@ -17,21 +58,28 @@
 				Ask Anything About <span class="font-extrabold">YouTube Videos</span>
 			</h1>
 			<p class="mb-8 text-xl leading-7 text-muted-foreground">
-				Get instant answers to your questions about any YouTube video. Just paste the URL and ask
-				away!
+				Get instant answers to your questions about any YouTube video.
 			</p>
-			<form class="mx-auto flex max-w-2xl gap-4">
+
+			<form class="mx-auto flex max-w-2xl gap-4" on:submit|preventDefault={handleAnalyze}>
 				<Input
 					type="url"
 					placeholder="Paste YouTube video URL here"
 					bind:value={videoUrl}
 					class="flex-grow"
+					disabled={loading}
 				/>
-				<Button type="submit" variant="default">
+				<Button type="submit" variant="default" disabled={loading}>
 					<Search class="mr-2 h-4 w-4" />
-					Analyze
+					{loading ? 'Analyzing...' : 'Analyze'}
 				</Button>
 			</form>
+
+			{#if error}
+				<Alert variant="destructive" class="mt-4">
+					<AlertDescription>{error}</AlertDescription>
+				</Alert>
+			{/if}
 		</section>
 
 		<section class="mb-16">
