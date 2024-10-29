@@ -1,6 +1,9 @@
 <script>
 	import { Home, DollarSign, Mail, LogIn } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
+
+	export let data;
+	console.log('navar', data);
 </script>
 
 <header class="flex items-center justify-between p-4">
