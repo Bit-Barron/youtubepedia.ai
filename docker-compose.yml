@@ -29,7 +29,7 @@ services:
       - proxy
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.youtubepedia.rule=Host(`youtubepedia.barron.agency`)'
+      - 'traefik.http.routers.youtubepedia.rule=Host(`youtubepedia.ai`)'
       - 'traefik.http.routers.youtubepedia.entrypoints=websecure'
       - 'traefik.http.routers.youtubepedia.tls.certresolver=letsencrypt'
       - 'traefik.http.services.youtubepedia.loadbalancer.server.port=3000'
