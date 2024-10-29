@@ -31,13 +31,6 @@ interface DatabaseUserAttributes {
 }
 
 function createGoogleAuth() {
-	if (dev) {
-		console.log('Google OAuth credentials:', {
-			clientId: process.env.GOOGLE_CLIENT_ID,
-			clientSecret: process.env.GOOGLE_CLIENT_SECRET?.slice(0, 4) + '...'
-		});
-	}
-
 	if (dev || !process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
 		return new Google(
 			process.env.GOOGLE_CLIENT_ID || 'dummy-id',

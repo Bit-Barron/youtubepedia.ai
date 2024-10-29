@@ -2,7 +2,7 @@ import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { transporter } from '$lib/server/mailer';
 import { generateRandomString } from 'oslo/crypto';
-import prisma from '../../../utils/prisma';
+import prisma from '../../../../utils/prisma';
 
 export const POST: RequestHandler = async ({ request }) => {
 	const { email } = await request.json();
