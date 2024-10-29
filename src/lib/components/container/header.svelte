@@ -48,15 +48,15 @@
 		</nav>
 
 		<div class="hidden items-center space-x-4 md:flex">
-			<ThemeProvider />
-
 			{#if data.user}
 				<span class="text-sm text-muted-foreground">{data.user.email}</span>
+				<ThemeProvider />
 				<Button variant="destructive" on:click={handleLogout}>
 					<LogOut class="mr-2 h-4 w-4" />
 					Log Out
 				</Button>
 			{:else}
+				<ThemeProvider />
 				<Button variant="default" href="/login">
 					<LogIn class="mr-2 h-4 w-4" />
 					Log In
