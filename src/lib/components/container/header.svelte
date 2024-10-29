@@ -11,13 +11,11 @@
 	} from '$lib/components/ui/sheet';
 	import { Separator } from '$lib/components/ui/separator';
 	import ThemeProvider from '$lib/components/container/navbar/theme-toggle.svelte';
-	import { t, locale } from 'svelte-i18n';
-	import LanguageToggle from './navbar/language-toggle.svelte';
 
 	export let data;
 
 	async function handleLogout() {
-		const response = await fetch('/api/logout', {
+		const response = await fetch('/api/auth/logout', {
 			method: 'POST'
 		});
 

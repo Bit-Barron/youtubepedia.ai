@@ -14,7 +14,7 @@
 	async function handleSubmit() {
 		loading = true;
 		try {
-			const response = await fetch('/api/forgot-password', {
+			const response = await fetch('/api/auth/forgot-password', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ email })
