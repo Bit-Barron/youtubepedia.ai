@@ -6,22 +6,24 @@
 	import { Alert, AlertDescription } from '$lib/components/ui/alert';
 	import { ArrowLeft } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
-	import type { ChatData, Message } from '../../../../../utils/types';
 
-	let chatData: ChatData | null = null;
+	let transcript = '';
+	let videoUrl = '';
 	let question = '';
-	let messages: Message[] = [];
+	let messages: Array<{ type: 'user' | 'bot'; content: string }> = [];
 	let loading = false;
 	let error = '';
 
 	onMount(() => {
 		const chatId = $page.params.chatId;
-		const storedChat = localStorage.getItem(`chat_${chatId}`);
-		if (storedChat) {
-			chatData = JSON.parse(storedChat);
-			messages = chatData?.messages || [];
+		const chatData = sessionStorage.getItem(`chat_${chatId}`);
+
+		if (chatData) {
+			const data = JSON.parse(chatData);
+			transcript = data.transcript;
+			videoUrl = data.videoUrl;
 		} else {
-			goto('/');
+			goto('/dashboard/chat');
 		}
 	});
 
@@ -32,13 +34,13 @@
 		error = '';
 
 		try {
-			const response = await fetch('http://localhost:5000/ask', {
+			const response = await fetch('/api/ask', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify({
-					transcript: chatData?.transcript,
+					transcript,
 					question
 				})
 			});
@@ -46,43 +48,34 @@
 			const data = await response.json();
 
 			if (data.answer) {
-				const newMessage: Message = {
-					type: 'user',
-					content: question
-				};
-				const botMessage: Message = {
-					type: 'bot',
-					content: data.answer
-				};
-
-				messages = [...messages, newMessage, botMessage];
-
-				if (chatData) {
-					chatData.messages = messages;
-					localStorage.setItem(`chat_${$page.params.chatId}`, JSON.stringify(chatData));
-				}
-
+				messages = [
+					...messages,
+					{ type: 'user', content: question },
+					{ type: 'bot', content: data.answer }
+				];
 				question = '';
 			} else {
 				error = data.error || 'Failed to get answer';
 			}
 		} catch (e) {
 			error = 'Failed to get answer. Please try again.';
+		} finally {
+			loading = false;
 		}
 	}
 </script>
 
 <div class="container mx-auto max-w-4xl p-4">
-	<Button variant="ghost" class="mb-4" on:click={() => goto('/')}>
+	<Button variant="ghost" class="mb-4" on:click={() => goto('/dashboard/chat')}>
 		<ArrowLeft class="mr-2 h-4 w-4" />
-		Back to Home
+		Back to Videos
 	</Button>
 
 	<div class="flex h-[calc(100vh-8rem)] flex-col">
 		<div class="border-b pb-4">
 			<h1 class="text-2xl font-bold">Chat about video</h1>
 			<p class="overflow-hidden text-ellipsis text-sm text-muted-foreground">
-				{chatData?.videoUrl}
+				{videoUrl}
 			</p>
 		</div>
 
