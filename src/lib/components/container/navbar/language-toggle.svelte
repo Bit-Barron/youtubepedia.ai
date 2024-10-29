@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentLang, languages, setLanguage } from '../../../stores/language';
+	import { currentLang, languages, setLanguage } from '../../../store/language';
 
 	const localeFlags = {
 		en: '🇺🇸',
