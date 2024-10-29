@@ -20,11 +20,21 @@ model User {
   sessions Session[]
   resetToken String? @unique
   resetTokenExpiry DateTime?
+
+  Chat Chat[]
 }
 
 model Session {
   id        String   @id
   userId    String
   expiresAt DateTime
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
+
+model Chat {
+  id        String   @id
+  userId    String
+  message   String
+  createdAt DateTime
   user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
 }
