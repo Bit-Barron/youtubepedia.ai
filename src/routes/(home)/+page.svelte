@@ -1,23 +1,10 @@
 <script>
 	import Navbar from '$lib/components/container/navbar/navbar.svelte';
 	import { PlayCircle, Search, MessageCircle } from 'lucide-svelte';
-	import { onMount } from 'svelte';
 
 	let videoUrl = '';
 
-	// @ts-ignore
-	function handleSubmit(event) {
-		event.preventDefault();
-		console.log('Submitted URL:', videoUrl);
-	}
-
-	onMount(() => {
-		document.body.classList.add('dark');
-	});
-
 	export let data;
-
-	console.log('asdasd', data);
 </script>
 
 <div class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100">
@@ -32,7 +19,7 @@
 				Get instant answers to your questions about any YouTube video. Just paste the URL and ask
 				away!
 			</p>
-			<form on:submit={handleSubmit} class="mx-auto flex max-w-2xl gap-4">
+			<form class="mx-auto flex max-w-2xl gap-4">
 				<input
 					type="url"
 					placeholder="Paste YouTube video URL here"
@@ -103,9 +90,9 @@
 				</div>
 				<nav>
 					<ul class="flex space-x-4">
-						<li><a href="#" class="hover:text-purple-400">Privacy Policy</a></li>
-						<li><a href="#" class="hover:text-purple-400">Terms of Service</a></li>
-						<li><a href="#" class="hover:text-purple-400">Contact Us</a></li>
+						<li><a href="/policy" class="hover:text-purple-400">Privacy Policy</a></li>
+						<li><a href="/terms" class="hover:text-purple-400">Terms of Service</a></li>
+						<li><a href="/contact" class="hover:text-purple-400">Contact Us</a></li>
 					</ul>
 				</nav>
 			</div>
@@ -115,18 +102,3 @@
 		</div>
 	</footer>
 </div>
-
-<style>
-	:global(body) {
-		margin: 0;
-		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
-			'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
-	}
-
-	:global(body.dark) {
-		background-color: #1a202c;
-		color: #f7fafc;
-	}
-</style>
