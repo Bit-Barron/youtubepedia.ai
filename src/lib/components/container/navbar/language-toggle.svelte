@@ -1,36 +1,23 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button';
-	import {
-		DropdownMenu,
-		DropdownMenuContent,
-		DropdownMenuItem,
-		DropdownMenuTrigger
-	} from '$lib/components/ui/dropdown-menu';
-	import { Globe } from 'lucide-svelte';
-	import { locale, t } from 'svelte-i18n';
+	import { currentLang, languages, setLanguage } from '../../../stores/language';
 
-	const languages = [
-		{ code: 'en', label: 'English' },
-		{ code: 'de', label: 'Deutsch' }
-	];
+	const localeFlags = {
+		en: '🇺🇸',
+		de: '🇩🇪'
+	};
 
-	function setLocale(code: string) {
-		locale.set(code);
+	function toggleLanguage() {
+		const newLang = $currentLang === 'en' ? 'de' : 'en';
+		setLanguage(newLang);
 	}
 </script>
 
-<DropdownMenu>
-	<DropdownMenuTrigger asChild>
-		<Button variant="ghost" size="icon" class="h-9 w-9">
-			<Globe class="h-4 w-4" />
-			<span class="sr-only">{$t('common.toggle_language')}</span>
-		</Button>
-	</DropdownMenuTrigger>
-	<DropdownMenuContent align="end">
-		{#each languages as { code, label }}
-			<DropdownMenuItem on:click={() => setLocale(code)}>
-				<span class:font-bold={$locale === code}>{label}</span>
-			</DropdownMenuItem>
-		{/each}
-	</DropdownMenuContent>
-</DropdownMenu>
+<button
+	on:click={toggleLanguage}
+	class="inline-flex items-center gap-2 rounded-md border border-slate-700 bg-transparent px-3 py-1.5 hover:bg-slate-800"
+>
+	<span class="text-sm">{localeFlags[$currentLang as keyof typeof localeFlags]}</span>
+	<span class="text-sm text-slate-200">
+		{$currentLang === 'en' ? 'English' : 'Deutsch'}
+	</span>
+</button>

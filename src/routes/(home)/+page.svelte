@@ -5,6 +5,7 @@
 	import { AlertCircle, Youtube } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 	import { features } from '../../utils/constants';
+	import { _ } from 'svelte-i18n';
 
 	let videoUrl = '';
 	let transcriptLoading = false;

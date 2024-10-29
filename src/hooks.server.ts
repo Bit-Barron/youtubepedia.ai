@@ -1,7 +1,15 @@
 import { lucia } from '$lib/server/auth';
 import type { Handle } from '@sveltejs/kit';
+import { locale } from 'svelte-i18n';
 
 export const handle: Handle = async ({ event, resolve }) => {
+	const lang =
+		event.cookies.get('language') ||
+		event.request.headers.get('accept-language')?.split(',')[0] ||
+		'en';
+
+	locale.set(lang);
+
 	const sessionId = event.cookies.get(lucia.sessionCookieName);
 
 	if (!sessionId) {

@@ -11,6 +11,8 @@
 	} from '$lib/components/ui/sheet';
 	import { Separator } from '$lib/components/ui/separator';
 	import ThemeProvider from '$lib/components/container/navbar/theme-toggle.svelte';
+	import LanguageToggle from './navbar/language-toggle.svelte';
+	import { _ } from 'svelte-i18n';
 
 	export let data;
 
@@ -51,12 +53,15 @@
 			{#if data.user}
 				<span class="text-sm text-muted-foreground">{data.user.email}</span>
 				<ThemeProvider />
+				<LanguageToggle />
 				<Button variant="destructive" on:click={handleLogout}>
 					<LogOut class="mr-2 h-4 w-4" />
-					Log Out
+					Log LogOut
 				</Button>
 			{:else}
 				<ThemeProvider />
+				<LanguageToggle />
+
 				<Button variant="default" href="/login">
 					<LogIn class="mr-2 h-4 w-4" />
 					Log In
