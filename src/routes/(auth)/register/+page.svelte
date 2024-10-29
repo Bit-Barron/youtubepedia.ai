@@ -27,6 +27,10 @@
 				<Input id="password" name="password" type="password" required />
 			</div>
 			<div class="grid gap-2">
+				<div class="text-end text-sm">
+					Already have an account?
+					<a href="/login" class="underline">Sign in</a>
+				</div>
 				<Button type="submit" class="w-full">Create an account</Button>
 				<div class="relative flex items-center justify-center">
 					<Separator.Root class="shrink" />
@@ -44,10 +48,6 @@
 					/>
 					<span>Sign in with Google</span>
 				</button>
-			</div>
-			<div class="mt-4 text-center text-sm">
-				Already have an account?
-				<a href="/login" class="underline">Sign in</a>
 			</div>
 		</form>
 	</Card.Content>

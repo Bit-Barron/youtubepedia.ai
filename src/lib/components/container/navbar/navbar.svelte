@@ -1,8 +1,11 @@
 <script lang="ts">
-	import { Home, DollarSign, Mail, LogIn, LogOut } from 'lucide-svelte';
+	import { Home, DollarSign, Mail, LogIn, LogOut, Menu } from 'lucide-svelte';
 	import { goto, invalidateAll } from '$app/navigation';
+	import { fly } from 'svelte/transition';
 
 	export let data;
+
+	let isMenuOpen = false;
 
 	async function handleLogout() {
 		const response = await fetch('/api/logout', {
@@ -14,47 +17,109 @@
 			goto('/');
 		}
 	}
+
+	function toggleMenu() {
+		isMenuOpen = !isMenuOpen;
+	}
 </script>
 
-<header class="flex items-center justify-between p-4">
-	<nav class="flex space-x-4">
-		<button
-			on:click={() => goto('/')}
-			class="flex items-center text-white transition-colors duration-200 hover:text-red-400"
-		>
-			<Home class="mr-2 h-4 w-4" /> Home
-		</button>
-		<button
-			on:click={() => goto('/pricing')}
-			class="flex items-center text-white transition-colors duration-200 hover:text-red-400"
-		>
-			<DollarSign class="mr-2 h-4 w-4" /> Pricing
-		</button>
-		<button
-			on:click={() => goto('/contact')}
-			class="flex items-center text-white transition-colors duration-200 hover:text-red-400"
-		>
-			<Mail class="mr-2 h-4 w-4" /> Contact
-		</button>
-	</nav>
-
-	{#if data.user}
-		<div class="flex items-center space-x-4">
-			<span class="text-white">{data.user.email}</span>
-			<button
-				on:click={handleLogout}
-				type="submit"
-				class="flex items-center rounded-full bg-red-500 px-4 py-2 text-white transition-colors duration-200 hover:bg-red-600"
+<header class="bg-gray-900 shadow-lg">
+	<div class="container mx-auto flex items-center justify-between px-4 py-4">
+		<div class="flex items-center">
+			<a
+				href="/"
+				class="text-2xl font-bold text-red-500 transition-colors duration-200 hover:text-red-400"
 			>
-				<LogOut class="mr-2 h-4 w-4" /> Log Out
-			</button>
+				Youtubepedia
+			</a>
 		</div>
-	{:else}
+
+		<nav class="hidden space-x-6 md:flex">
+			<a
+				href="/"
+				class="flex items-center text-gray-300 transition-colors duration-200 hover:text-red-400"
+			>
+				<Home class="mr-2 h-4 w-4" /> Home
+			</a>
+			<a
+				href="/pricing"
+				class="flex items-center text-gray-300 transition-colors duration-200 hover:text-red-400"
+			>
+				<DollarSign class="mr-2 h-4 w-4" /> Pricing
+			</a>
+			<a
+				href="/contact"
+				class="flex items-center text-gray-300 transition-colors duration-200 hover:text-red-400"
+			>
+				<Mail class="mr-2 h-4 w-4" /> Contact
+			</a>
+		</nav>
+
+		<div class="hidden items-center space-x-4 md:flex">
+			{#if data.user}
+				<span class="text-gray-300">{data.user.email}</span>
+				<button
+					on:click={handleLogout}
+					class="flex items-center rounded-full bg-red-500 px-4 py-2 text-white transition-colors duration-200 hover:bg-red-600"
+				>
+					<LogOut class="mr-2 h-4 w-4" /> Log Out
+				</button>
+			{:else}
+				<a
+					href="/login"
+					class="flex items-center rounded-full bg-red-500 px-4 py-2 text-white transition-colors duration-200 hover:bg-red-600"
+				>
+					<LogIn class="mr-2 h-4 w-4" /> Log In
+				</a>
+			{/if}
+		</div>
+
 		<button
-			on:click={() => goto('/login')}
-			class="flex items-center rounded-full bg-red-500 px-4 py-2 text-white transition-colors duration-200 hover:bg-red-600"
+			class="text-gray-300 transition-colors duration-200 hover:text-red-400 md:hidden"
+			on:click={toggleMenu}
 		>
-			<LogIn class="mr-2 h-4 w-4" /> Log In
+			<Menu class="h-6 w-6" />
 		</button>
+	</div>
+
+	{#if isMenuOpen}
+		<div class="md:hidden" transition:fly={{ y: -50, duration: 300 }}>
+			<nav class="flex flex-col space-y-4 bg-gray-800 p-4">
+				<a
+					href="/"
+					class="flex items-center text-gray-300 transition-colors duration-200 hover:text-red-400"
+				>
+					<Home class="mr-2 h-4 w-4" /> Home
+				</a>
+				<a
+					href="/pricing"
+					class="flex items-center text-gray-300 transition-colors duration-200 hover:text-red-400"
+				>
+					<DollarSign class="mr-2 h-4 w-4" /> Pricing
+				</a>
+				<a
+					href="/contact"
+					class="flex items-center text-gray-300 transition-colors duration-200 hover:text-red-400"
+				>
+					<Mail class="mr-2 h-4 w-4" /> Contact
+				</a>
+				{#if data.user}
+					<span class="text-gray-300">{data.user.email}</span>
+					<button
+						on:click={handleLogout}
+						class="flex items-center rounded-full bg-red-500 px-4 py-2 text-white transition-colors duration-200 hover:bg-red-600"
+					>
+						<LogOut class="mr-2 h-4 w-4" /> Log Out
+					</button>
+				{:else}
+					<a
+						href="/login"
+						class="flex items-center rounded-full bg-red-500 px-4 py-2 text-white transition-colors duration-200 hover:bg-red-600"
+					>
+						<LogIn class="mr-2 h-4 w-4" /> Log In
+					</a>
+				{/if}
+			</nav>
+		</div>
 	{/if}
 </header>
