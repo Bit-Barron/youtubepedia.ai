@@ -56,7 +56,7 @@
 				<LanguageToggle />
 				<Button variant="destructive" on:click={handleLogout}>
 					<LogOut class="mr-2 h-4 w-4" />
-					Log Out
+					{$_('logout')}
 				</Button>
 			{:else}
 				<ThemeProvider />
@@ -64,7 +64,7 @@
 
 				<Button variant="default" href="/login">
 					<LogIn class="mr-2 h-4 w-4" />
-					Log In
+					{$_('login')}
 				</Button>
 			{/if}
 		</div>
@@ -82,15 +82,15 @@
 				<div class="grid gap-4 py-4">
 					<Button variant="ghost" href="/" class="w-full justify-start">
 						<Home class="mr-2 h-4 w-4" />
-						Home
+						{$_('home')}
 					</Button>
 					<Button variant="ghost" href="/pricing" class="w-full justify-start">
 						<DollarSign class="mr-2 h-4 w-4" />
-						Pricing
+						{$_('pricing')}
 					</Button>
 					<Button variant="ghost" href="/contact" class="w-full justify-start">
 						<Mail class="mr-2 h-4 w-4" />
-						Contact
+						{$_('contact')}
 					</Button>
 
 					<Separator />
@@ -99,12 +99,12 @@
 						<span class="px-4 text-sm text-muted-foreground">{data.user.email}</span>
 						<Button variant="destructive" on:click={handleLogout} class="w-full">
 							<LogOut class="mr-2 h-4 w-4" />
-							Log Out
+							{$_('logout')}
 						</Button>
 					{:else}
 						<Button variant="default" href="/login" class="w-full">
 							<LogIn class="mr-2 h-4 w-4" />
-							Log In
+							{$_('login')}
 						</Button>
 					{/if}
 				</div>

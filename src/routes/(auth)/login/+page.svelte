@@ -6,6 +6,7 @@
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Label } from '$lib/components/ui/label/index.js';
 	import * as Separator from '$lib/components/ui/separator/index.js';
+	import { _ } from 'svelte-i18n';
 
 	const googleAuth = () => {
 		goto('/login/googl');
@@ -14,8 +15,8 @@
 
 <Card.Root>
 	<Card.Header>
-		<Card.Title class="text-2xl">Login</Card.Title>
-		<Card.Description>Enter your email below to login to your account</Card.Description>
+		<Card.Title class="text-2xl">{$_('login')}</Card.Title>
+		<Card.Description>{$_('email-below')}</Card.Description>
 	</Card.Header>
 	<Card.Content>
 		<form use:enhance method="POST" class="grid gap-4">
@@ -25,22 +26,22 @@
 			</div>
 			<div class="grid gap-2">
 				<div class="flex items-center">
-					<Label for="password">Password</Label>
+					<Label for="password">{$_('password')}</Label>
 					<a href="/forgot-password" class="ml-auto inline-block text-sm underline">
-						Forgot your password?
+						{$_('forgotten-password')}
 					</a>
 				</div>
 				<Input id="password" name="password" type="password" required />
 			</div>
 			<div class="grid gap-2">
 				<div class="text-end text-sm">
-					Don&apos;t have an account?
-					<a href="/register" class="underline">Sign up</a>
+					Don&apos;t {$_('no-account')}?&nbsp;
+					<a href="/register" class="underline">{$_('sign-up')}</a>
 				</div>
-				<Button type="submit" class="w-full">Login</Button>
+				<Button type="submit" class="w-full">{$_('login')}</Button>
 				<div class="relative flex items-center justify-center">
 					<Separator.Root class="shrink" />
-					<span class="px-2 text-xs text-muted-foreground">OR</span>
+					<span class="px-2 text-xs text-muted-foreground">{$_('or')}</span>
 					<Separator.Root class="shrink" />
 				</div>
 				<button
@@ -52,7 +53,7 @@
 						alt="Google logo"
 						class="h-5 w-5"
 					/>
-					<span>Sign in with Google</span>
+					<span>{$_('sign-in-with-google')}</span>
 				</button>
 			</div>
 		</form>

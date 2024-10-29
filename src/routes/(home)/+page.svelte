@@ -83,6 +83,7 @@
 							{/if}
 						</Button>
 					</div>
+					
 					<div class="mt-4 flex items-center text-sm text-gray-400">
 						<AlertCircle class="mr-2 h-4 w-4" />
 						<p>The video must be public and have closed captions available.</p>

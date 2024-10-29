@@ -1,5 +1,18 @@
 {
-	"Home": "Home",
-	"Pricing": "Pricing",
-	"Contact": "Contact"
+	"home": "Home",
+	"pricing": "Pricing",
+	"contact": "Contact",
+	"login": "Login",
+	"logout": "Logout",
+	"reset-password": "Reset Password",
+	"email": "Enter your email address and we'll send you instructions to reset your password",
+	"remember-your-password": "Remember your password?",
+	"back-to-login": "Back to login",
+	"email-below": "Enter your email below and we'll send you instructions to reset your password",
+	"forgotten-password": "Forgot password?",
+	"no-account": "No account?",
+	"sign-up": "Sign up",
+	"or": "OR",
+	"sign-in-with-google": "Sign in with Google",
+	"password": "Password"
 }

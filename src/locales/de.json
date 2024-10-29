@@ -1,5 +1,17 @@
 {
-	"Home": "Zuhause",
-	"Pricing": "Preise",
-	"Contact": "Kontakt"
+	"home": "Zuhause",
+	"pricing": "Preise",
+	"contact": "Kontakt",
+	"login": "Anmeldung",
+	"logout": "Ausloggen",
+	"reset-password": "Passwort zurücksetzen",
+	"email": "Geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen eine Anleitung zum Zurücksetzen Ihres Passworts.",
+	"remember-your-password": "Erinnern Sie sich an Ihr Passwort?",
+	"back-to-login": "Zurück zur Anmeldung",
+	"forgotten-password": "Passwort vergessen?",
+	"no-account": "Kein Konto?",
+	"sign-up": "Sign up",
+	"or": "ODER",
+	"sign-in-with-google": "Mit Google anmelden",
+	"password": "Passwort"
 }

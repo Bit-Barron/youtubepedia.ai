@@ -5,6 +5,7 @@
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Label } from '$lib/components/ui/label/index.js';
 	import { toast } from 'svelte-sonner';
+	import { _ } from 'svelte-i18n';
 
 	let isSubmitting = false;
 	let email = '';
@@ -33,9 +34,9 @@
 
 <Card.Root>
 	<Card.Header>
-		<Card.Title class="text-2xl">Reset Password</Card.Title>
+		<Card.Title class="text-2xl">{$_('reset-password')}</Card.Title>
 		<Card.Description>
-			Enter your email address and we'll send you instructions to reset your password
+			{$_('reset-password')}
 		</Card.Description>
 	</Card.Header>
 	<Card.Content>
@@ -48,8 +49,8 @@
 				{isSubmitting ? 'Sending...' : 'Send Reset Link'}
 			</Button>
 			<div class="mt-4 text-center text-sm">
-				Remember your password?
-				<a href="/login" class="underline">Back to login</a>
+				{$_('remember-your-password')}
+				<a href="/login" class="underline">{$_('back-to-login')}</a>
 			</div>
 		</form>
 	</Card.Content>
