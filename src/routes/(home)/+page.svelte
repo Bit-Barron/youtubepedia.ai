@@ -4,7 +4,7 @@
 	import { Card, CardContent } from '$lib/components/ui/card';
 	import { AlertCircle, Youtube } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
-	import { features } from '../../utils/constants';
+	import { features } from '../../lib/utils/constants';
 	import { _ } from 'svelte-i18n';
 
 	let videoUrl = '';

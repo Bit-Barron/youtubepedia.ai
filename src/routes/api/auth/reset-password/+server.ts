@@ -1,7 +1,7 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { Argon2id } from 'oslo/password';
-import prisma from '../../../utils/prisma';
+import prisma from '@/utils/prisma';
 
 export const POST: RequestHandler = async ({ request }) => {
 	const { token, password } = await request.json();

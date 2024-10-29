@@ -37,15 +37,15 @@
 		<nav class="hidden space-x-2 md:flex">
 			<Button variant="ghost" href="/">
 				<Home class="mr-2 h-4 w-4" />
-				Home
+				{$_('home')}
 			</Button>
 			<Button variant="ghost" href="/pricing">
 				<DollarSign class="mr-2 h-4 w-4" />
-				Pricing
+				{$_('pricing')}
 			</Button>
 			<Button variant="ghost" href="/contact">
 				<Mail class="mr-2 h-4 w-4" />
-				Contact
+				{$_('contact')}
 			</Button>
 		</nav>
 
@@ -56,7 +56,7 @@
 				<LanguageToggle />
 				<Button variant="destructive" on:click={handleLogout}>
 					<LogOut class="mr-2 h-4 w-4" />
-					Log LogOut
+					Log Out
 				</Button>
 			{:else}
 				<ThemeProvider />

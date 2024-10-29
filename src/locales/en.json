@@ -1,4 +1,5 @@
 {
-	"greeting": "Hello",
-	"farewell": "Goodbye"
+	"Home": "Home",
+	"Pricing": "Pricing",
+	"Contact": "Contact"
 }

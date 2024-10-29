@@ -2,7 +2,7 @@ import { generateId } from 'lucia';
 import { Argon2id } from 'oslo/password';
 import { lucia } from '$lib/server/auth.js';
 import { redirect, type Actions } from '@sveltejs/kit';
-import prisma from '../../../utils/prisma';
+import prisma from '../../../lib/utils/prisma';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
