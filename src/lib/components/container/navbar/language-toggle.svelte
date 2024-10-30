@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Button from '@/components/ui/button/button.svelte';
 	import { currentLang, languages, setLanguage } from '../../../store/language';
 
 	const localeFlags = {
@@ -12,12 +13,9 @@
 	}
 </script>
 
-<button
-	on:click={toggleLanguage}
-	class="inline-flex items-center gap-2 rounded-md border border-slate-700 bg-transparent px-3 py-1.5 hover:bg-slate-800"
->
+<Button variant="outline" on:click={toggleLanguage}>
 	<span class="text-sm">{localeFlags[$currentLang as keyof typeof localeFlags]}</span>
-	<span class="text-sm text-slate-200">
+	<span class="text-sm">
 		{$currentLang === 'en' ? 'English' : 'Deutsch'}
 	</span>
-</button>
+</Button>

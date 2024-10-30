@@ -36,7 +36,7 @@
 	<Card.Header>
 		<Card.Title class="text-2xl">{$_('reset-password')}</Card.Title>
 		<Card.Description>
-			{$_('reset-password')}
+			{$_('reset-password-description')}
 		</Card.Description>
 	</Card.Header>
 	<Card.Content>
@@ -52,7 +52,7 @@
 				/>
 			</div>
 			<Button type="submit" class="w-full" disabled={isSubmitting}>
-				{isSubmitting ? 'Sending...' : 'Send Reset Link'}
+				{isSubmitting ? 'Sending...' : $_('reset-link')}
 			</Button>
 			<div class="mt-4 text-center text-sm">
 				{$_('remember-your-password')}
