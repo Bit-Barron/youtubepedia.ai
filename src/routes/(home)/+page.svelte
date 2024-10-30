@@ -46,7 +46,7 @@
 	}
 </script>
 
-<div class="min-h-screen bg-[#0a0f1a] text-white">
+<div class="min-h-screen">
 	<div class="container mx-auto px-4">
 		<main class="py-16">
 			<div class="mb-12 text-center">
@@ -60,7 +60,7 @@
 				</p>
 			</div>
 
-			<Card class="mx-auto mb-16 max-w-2xl border-none bg-[#1a2332] shadow-lg">
+			<Card class="mx-auto mb-16 max-w-2xl border-none shadow-lg">
 				<CardContent class="p-6">
 					<h2 class="mb-4 text-xl font-semibold">Get Started</h2>
 					<p class="mb-4 text-gray-400">Enter your YouTube video URL below to begin the analysis</p>
@@ -69,12 +69,12 @@
 							type="text"
 							placeholder="Paste your YouTube video URL here..."
 							bind:value={videoUrl}
-							class="flex-grow border-gray-700 bg-[#0a0f1a]"
+							class="flex-grow"
 						/>
 						<Button
 							on:click={handleTranscript}
+							variant="destructive"
 							disabled={transcriptLoading || !videoUrl}
-							class="bg-red-600 hover:bg-red-700"
 						>
 							{#if transcriptLoading}
 								Processing...
@@ -83,7 +83,7 @@
 							{/if}
 						</Button>
 					</div>
-					
+
 					<div class="mt-4 flex items-center text-sm text-gray-400">
 						<AlertCircle class="mr-2 h-4 w-4" />
 						<p>The video must be public and have closed captions available.</p>
@@ -93,7 +93,7 @@
 
 			<div class="grid gap-8 md:grid-cols-3">
 				{#each features as feature}
-					<Card class="border-none bg-[#1a2332]">
+					<Card class="border-none">
 						<CardContent class="p-6">
 							<svelte:component this={feature.icon} class="mb-4 h-10 w-10 text-red-600" />
 							<h3 class="mb-2 text-xl font-semibold">{feature.title}</h3>
