@@ -22,8 +22,6 @@
 			const data = JSON.parse(chatData);
 			transcript = data.transcript;
 			videoUrl = data.videoUrl;
-		} else {
-			goto('/dashboard/chat');
 		}
 	});
 
@@ -66,7 +64,7 @@
 </script>
 
 <div class="container mx-auto max-w-4xl p-4">
-	<Button variant="ghost" class="mb-4" on:click={() => goto('/dashboard/chat')}>
+	<Button variant="ghost" class="mb-4">
 		<ArrowLeft class="mr-2 h-4 w-4" />
 		Back to Videos
 	</Button>

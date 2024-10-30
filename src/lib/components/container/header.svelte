@@ -34,21 +34,6 @@
 			<a href="/" class="text-2xl font-bold"> Youtubepedia </a>
 		</div>
 
-		<nav class="hidden space-x-2 md:flex">
-			<Button variant="ghost" href="/">
-				<Home class="mr-2 h-4 w-4" />
-				{$_('home')}
-			</Button>
-			<Button variant="ghost" href="/pricing">
-				<DollarSign class="mr-2 h-4 w-4" />
-				{$_('pricing')}
-			</Button>
-			<Button variant="ghost" href="/contact">
-				<Mail class="mr-2 h-4 w-4" />
-				{$_('contact')}
-			</Button>
-		</nav>
-
 		<div class="hidden items-center space-x-4 md:flex">
 			{#if data.user}
 				<span class="text-sm text-muted-foreground">{data.user.email}</span>
