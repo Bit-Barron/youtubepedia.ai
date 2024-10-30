@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Button from '@/components/ui/button/button.svelte';
-	import { currentLang, languages, setLanguage } from '../../../store/language';
+	import { currentLang, setLanguage } from '@/store/language';
 
 	const localeFlags = {
 		en: '🇺🇸',

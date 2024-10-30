@@ -7,10 +7,6 @@
 	import { Label } from '$lib/components/ui/label/index.js';
 	import * as Separator from '$lib/components/ui/separator/index.js';
 	import { _ } from 'svelte-i18n';
-
-	const googleAuth = () => {
-		goto('/login/google');
-	};
 </script>
 
 <Card.Root>
@@ -51,7 +47,7 @@
 					<Separator.Root class="shrink" />
 				</div>
 				<button
-					on:click={googleAuth}
+					on:click={() => goto('/login/google')}
 					class="flex h-9 w-full items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-3 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-[#4285F4]/50"
 				>
 					<img

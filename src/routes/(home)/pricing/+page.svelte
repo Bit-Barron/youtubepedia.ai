@@ -3,7 +3,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '$lib/components/ui/card';
 	import { Badge } from '$lib/components/ui/badge';
-	import { plans } from '../../../lib/utils/constants';
+	import { plans } from '@/utils/constants';
 </script>
 
 <div class="min-h-screen">

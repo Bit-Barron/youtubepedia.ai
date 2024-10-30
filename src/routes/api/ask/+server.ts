@@ -8,7 +8,6 @@ const groqClient = new Groq({
 	apiKey: `${GROQ_API_KEY}`
 });
 
-
 export const POST: RequestHandler = async ({ request }) => {
 	try {
 		const { transcript, question } = await request.json();
@@ -21,7 +20,7 @@ export const POST: RequestHandler = async ({ request }) => {
 			messages: [
 				{
 					role: 'user',
-					content: `The following is a transcript of a YouTube video:\n\n${transcript}\n\nBased on the transcript, answer the following question:\n\n${question}\n`
+					content: `The following is a transcript of a YouTube video:\n\n${transcript}\n\nBased on the transcript, answer the following question:\n\n${question}\n, give a answear in the same language as the transcript.`
 				}
 			],
 			model: 'llama3-8b-8192'

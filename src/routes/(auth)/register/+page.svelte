@@ -50,7 +50,7 @@
 						alt="Google logo"
 						class="h-5 w-5"
 					/>
-					<span>Sign up with Google</span>
+					<span>{$_('sign-in-with-google')}</span>
 				</button>
 			</div>
 		</form>
