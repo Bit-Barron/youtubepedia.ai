@@ -55,19 +55,18 @@
 				</div>
 				<h1 class="mb-4 text-4xl font-bold">YouTube Transcript Assistant</h1>
 				<p class="mx-auto max-w-2xl text-xl text-gray-400">
-					Transform any YouTube video into an interactive conversation. Get instant access to
-					transcripts and chat about the content with AI assistance.
+					{$_('description')}
 				</p>
 			</div>
 
 			<Card class="mx-auto mb-16 max-w-2xl border-none shadow-lg">
 				<CardContent class="p-6">
-					<h2 class="mb-4 text-xl font-semibold">Get Started</h2>
-					<p class="mb-4 text-gray-400">Enter your YouTube video URL below to begin the analysis</p>
+					<h2 class="mb-4 text-xl font-semibold">{$_('get-started')}</h2>
+					<p class="mb-4 text-gray-400">{$_('youtube-url')}</p>
 					<div class="flex space-x-2">
 						<Input
 							type="text"
-							placeholder="Paste your YouTube video URL here..."
+							placeholder={$_('input-placeholder')}
 							bind:value={videoUrl}
 							class="flex-grow"
 						/>
@@ -77,16 +76,16 @@
 							disabled={transcriptLoading || !videoUrl}
 						>
 							{#if transcriptLoading}
-								Processing...
+								{$_('processing')}
 							{:else}
-								Get Transcript
+								{$_('get-transcript')}
 							{/if}
 						</Button>
 					</div>
 
 					<div class="mt-4 flex items-center text-sm text-gray-400">
 						<AlertCircle class="mr-2 h-4 w-4" />
-						<p>The video must be public and have closed captions available.</p>
+						<p>{$_('public')}</p>
 					</div>
 				</CardContent>
 			</Card>
@@ -96,8 +95,8 @@
 					<Card class="border-none">
 						<CardContent class="p-6">
 							<svelte:component this={feature.icon} class="mb-4 h-10 w-10 text-red-600" />
-							<h3 class="mb-2 text-xl font-semibold">{feature.title}</h3>
-							<p class="text-gray-400">{feature.description}</p>
+							<h3 class="mb-2 text-xl font-semibold">{$_(feature.titleKey)}</h3>
+							<p class="text-gray-400">{$_(feature.descriptionKey)}</p>
 						</CardContent>
 					</Card>
 				{/each}
@@ -105,7 +104,7 @@
 		</main>
 
 		<footer class="py-8 text-center text-gray-400">
-			<p>&copy; 2024 Youtubepedia. All rights reserved.</p>
+			<p>&copy; 2024 Youtubepedia. {$_('reserved')}.</p>
 		</footer>
 	</div>
 </div>

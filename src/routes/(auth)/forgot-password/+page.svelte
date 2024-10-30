@@ -43,7 +43,13 @@
 		<form class="grid gap-4" on:submit|preventDefault={handleSubmit}>
 			<div class="grid gap-2">
 				<Label for="email">Email</Label>
-				<Input bind:value={email} id="email" type="email" placeholder="m@example.com" required />
+				<Input
+					bind:value={email}
+					id="email"
+					type="email"
+					placeholder={$_('email-placeholder')}
+					required
+				/>
 			</div>
 			<Button type="submit" class="w-full" disabled={isSubmitting}>
 				{isSubmitting ? 'Sending...' : 'Send Reset Link'}

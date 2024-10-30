@@ -31,21 +31,20 @@ export const plans = [
 		recommended: false
 	}
 ];
-
 export const features = [
 	{
 		icon: Clock,
-		title: 'Save Time',
-		description: 'Get instant access to video transcripts without watching the entire content'
+		titleKey: 'features.saveTime.title',
+		descriptionKey: 'features.saveTime.description'
 	},
 	{
 		icon: MessageSquare,
-		title: 'Interactive Chat',
-		description: 'Ask questions and get instant answers about the video content'
+		titleKey: 'features.interactiveChat.title',
+		descriptionKey: 'features.interactiveChat.description'
 	},
 	{
 		icon: Youtube,
-		title: 'Any YouTube Video',
-		description: 'Works with any public video that has captions enabled'
+		titleKey: 'features.anyYouTubeVideo.title',
+		descriptionKey: 'features.anyYouTubeVideo.description'
 	}
 ];

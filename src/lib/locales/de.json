@@ -10,8 +10,32 @@
 	"back-to-login": "Zurück zur Anmeldung",
 	"forgotten-password": "Passwort vergessen?",
 	"no-account": "Kein Konto?",
-	"sign-up": "Sign up",
+	"sign-up": "Registrieren",
 	"or": "ODER",
+	"email-placeholder": "müller@gmail.com", 
 	"sign-in-with-google": "Mit Google anmelden",
-	"password": "Passwort"
+	"password": "Passwort",
+	"get-started": "Loslegen",
+	"processing": "Verarbeitung",
+	"get-transcript": "Transkript erhalten",
+	"public": "Das Video muss öffentlich sein und über Untertitel verfügen.",
+	"reserved": "Alle Rechte vorbehalten",
+	"input-placeholder": "Fügen Sie die URL Ihres YouTube-Videos hier ein...",
+	"features": {
+		"saveTime": {
+			"title": "Zeit sparen",
+			"description": "Erhalten Sie sofortigen Zugriff auf Video-Transkripte, ohne den gesamten Inhalt ansehen zu müssen"
+		},
+		"interactiveChat": {
+			"title": "Interaktiver Chat",
+			"description": "Stellen Sie Fragen und erhalten Sie sofortige Antworten zum Videoinhalt"
+		},
+		"anyYouTubeVideo": {
+			"title": "Beliebige YouTube-Videos",
+			"description": "Funktioniert mit jedem öffentlichen Video, das Untertitel aktiviert hat"
+		}
+	},
+	"email-below": "Geben Sie unten Ihre E-Mail-Adresse ein und wir senden Ihnen eine Anleitung zum Zurücksetzen Ihres Passworts.",
+	"youtube-url": "Geben Sie unten die URL Ihres YouTube-Videos ein, um die Analyse zu starten",
+	"description": "Verwandeln Sie jedes YouTube-Video in eine interaktive Unterhaltung. Erhalten Sie sofortigen Zugriff auf Transkripte und chatten Sie mit KI-Unterstützung über den Inhalt."
 }

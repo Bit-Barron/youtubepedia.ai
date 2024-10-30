@@ -9,7 +9,7 @@
 	import { _ } from 'svelte-i18n';
 
 	const googleAuth = () => {
-		goto('/login/googl');
+		goto('/login/google');
 	};
 </script>
 
@@ -22,7 +22,13 @@
 		<form use:enhance method="POST" class="grid gap-4">
 			<div class="grid gap-2">
 				<Label for="email">Email</Label>
-				<Input id="email" name="email" type="email" placeholder="m@example.com" required />
+				<Input
+					id="email"
+					name="email"
+					type="email"
+					placeholder={$_('email-placeholder')}
+					required
+				/>
 			</div>
 			<div class="grid gap-2">
 				<div class="flex items-center">
@@ -35,7 +41,7 @@
 			</div>
 			<div class="grid gap-2">
 				<div class="text-end text-sm">
-					Don&apos;t {$_('no-account')}?&nbsp;
+					{$_('no-account')}&nbsp;
 					<a href="/register" class="underline">{$_('sign-up')}</a>
 				</div>
 				<Button type="submit" class="w-full">{$_('login')}</Button>

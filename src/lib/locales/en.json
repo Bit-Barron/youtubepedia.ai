@@ -13,6 +13,29 @@
 	"no-account": "No account?",
 	"sign-up": "Sign up",
 	"or": "OR",
+	"email-placeholder": "john@gmail.com", 
 	"sign-in-with-google": "Sign in with Google",
-	"password": "Password"
+	"password": "Password",
+	"get-started": "Get Started",
+	"processing": "Processing",
+	"get-transcript": "Get Transcript",
+	"reserved": "All rights reserved",
+	"public": "The video must be public and have closed captions available.",
+	"input-placeholder": "Paste your YouTube video URL here...",
+	"youtube-url": "Enter your YouTube video URL below to begin the analysis",
+	"description": "Transform any YouTube video into an interactive conversation. Get instant access to transcripts and chat about the content with AI assistance.",
+	"features": {
+		"saveTime": {
+			"title": "Save Time",
+			"description": "Get instant access to video transcripts without watching the entire content"
+		},
+		"interactiveChat": {
+			"title": "Interactive Chat",
+			"description": "Ask questions and get instant answers about the video content"
+		},
+		"anyYouTubeVideo": {
+			"title": "Any YouTube Video",
+			"description": "Works with any public video that has captions enabled"
+		}
+	}
 }

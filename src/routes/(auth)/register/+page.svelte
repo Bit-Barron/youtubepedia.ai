@@ -1,26 +1,30 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { goto } from '$app/navigation';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Label } from '$lib/components/ui/label/index.js';
 	import * as Separator from '$lib/components/ui/separator/index.js';
-
-	const googleAuth = () => {
-		window.location.href = '/login/google';
-	};
+	import { _ } from 'svelte-i18n';
 </script>
 
 <Card.Root class="mx-auto max-w-sm">
 	<Card.Header>
 		<Card.Title class="text-xl">Sign Up</Card.Title>
-		<Card.Description>Enter your information to create an account</Card.Description>
+		<Card.Description>{$_('email_below')}</Card.Description>
 	</Card.Header>
 	<Card.Content>
 		<form method="POST" use:enhance class="grid gap-4">
 			<div class="grid gap-2">
 				<Label for="email">Email</Label>
-				<Input id="email" name="email" type="email" placeholder="m@example.com" required />
+				<Input
+					id="email"
+					name="email"
+					type="email"
+					placeholder={$_('email-placeholder')}
+					required
+				/>
 			</div>
 			<div class="grid gap-2">
 				<Label for="password">Password</Label>
@@ -38,7 +42,7 @@
 					<Separator.Root class="shrink" />
 				</div>
 				<button
-					on:click={googleAuth}
+					on:click={() => goto('/login/google')}
 					class="flex h-9 w-full items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-3 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-[#4285F4]/50"
 				>
 					<img
