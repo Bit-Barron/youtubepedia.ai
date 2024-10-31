@@ -120,5 +120,3 @@
 		</footer>
 	</div>
 </div>
-
-Version 2 of 2
