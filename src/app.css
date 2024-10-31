@@ -4,57 +4,89 @@
 
 @layer base {
 	:root {
-		--background: 0 0% 100%;
-		--foreground: 20 14.3% 4.1%;
+		/* Creative Professional Dashboard - Light */
+		--background: 228 40% 98%; /* Subtiles Blaugrau */
+		--foreground: 228 50% 15%;
+
+		/* Moderne, aber geschäftliche Hauptfarben */
+		--primary: 245 60% 60%; /* Geschäftliches, aber modernes Violett */
+		--primary-foreground: 0 0% 100%;
+
+		--secondary: 190 85% 45%; /* Frisches Cyan für Daten */
+		--secondary-foreground: 0 0% 100%;
+
+		--accent: 280 75% 55%; /* Distinguiertes Lila für Akzente */
+		--accent-foreground: 0 0% 100%;
+
+		/* Elegante Kartenfarben */
 		--card: 0 0% 100%;
-		--card-foreground: 20 14.3% 4.1%;
-		--popover: 0 0% 100%;
-		--popover-foreground: 20 14.3% 4.1%;
-		--primary: 24.6 95% 53.1%;
-		--primary-foreground: 60 9.1% 97.8%;
-		--secondary: 60 4.8% 95.9%;
-		--secondary-foreground: 24 9.8% 10%;
-		--muted: 60 4.8% 95.9%;
-		--muted-foreground: 25 5.3% 44.7%;
-		--accent: 60 4.8% 95.9%;
-		--accent-foreground: 24 9.8% 10%;
-		--destructive: 0 72.22% 50.59%;
-		--destructive-foreground: 60 9.1% 97.8%;
-		--border: 20 5.9% 90%;
-		--input: 20 5.9% 90%;
-		--ring: 24.6 95% 53.1%;
-		--radius: 0.5rem;
+		--card-foreground: 228 50% 15%;
+
+		--muted: 228 20% 94%;
+		--muted-foreground: 228 30% 45%;
+
+		--popover: 228 40% 98%;
+		--popover-foreground: 228 50% 15%;
+
+		--border: 228 30% 92%;
+		--input: 228 30% 92%;
+
+		--destructive: 0 85% 60%;
+		--destructive-foreground: 0 0% 100%;
+
+		--ring: 245 60% 60%;
+		--radius: 1rem;
 	}
+
 	.dark {
-		--background: 20 14.3% 4.1%;
-		--foreground: 60 9.1% 97.8%;
-		--card: 20 14.3% 4.1%;
-		--card-foreground: 60 9.1% 97.8%;
-		--popover: 20 14.3% 4.1%;
-		--popover-foreground: 60 9.1% 97.8%;
-		--primary: 20.5 90.2% 48.2%;
-		--primary-foreground: 60 9.1% 97.8%;
-		--secondary: 12 6.5% 15.1%;
-		--secondary-foreground: 60 9.1% 97.8%;
-		--muted: 12 6.5% 15.1%;
-		--muted-foreground: 24 5.4% 63.9%;
-		--accent: 12 6.5% 15.1%;
-		--accent-foreground: 60 9.1% 97.8%;
-		--destructive: 0 72.2% 50.6%;
-		--destructive-foreground: 60 9.1% 97.8%;
-		--border: 12 6.5% 15.1%;
-		--input: 12 6.5% 15.1%;
-		--ring: 20.5 90.2% 48.2%;
+		/* Creative Professional Dashboard - Dark */
+		--background: 228 35% 12%; /* Tiefes, professionelles Dunkel */
+		--foreground: 228 15% 95%;
+
+		/* Strahlende Dark-Mode Farben */
+		--primary: 245 65% 65%;
+		--primary-foreground: 0 0% 100%;
+
+		--secondary: 190 85% 50%;
+		--secondary-foreground: 0 0% 100%;
+
+		--accent: 280 80% 60%;
+		--accent-foreground: 0 0% 100%;
+
+		--card: 228 30% 15%;
+		--card-foreground: 228 15% 95%;
+
+		--muted: 228 25% 20%;
+		--muted-foreground: 228 15% 70%;
+
+		--popover: 228 35% 12%;
+		--popover-foreground: 228 15% 95%;
+
+		--border: 228 25% 25%;
+		--input: 228 25% 25%;
+
+		--destructive: 0 85% 65%;
+		--destructive-foreground: 0 0% 100%;
+
+		--ring: 245 65% 65%;
 	}
 }
-@blayer base {
+
+@layer base {
 	* {
 		@apply border-border;
 	}
+
 	body {
 		@apply bg-background text-foreground;
-		font-feature-settings:
-			'rlig' 1,
-			'calt' 1;
+		/* Moderner, subtiler Gradient-Mix */
+		background-image: radial-gradient(
+				ellipse 80% 50% at top center,
+				hsl(var(--primary) / 0.07),
+				transparent
+			),
+			radial-gradient(ellipse 80% 50% at bottom center, hsl(var(--secondary) / 0.05), transparent),
+			linear-gradient(135deg, hsl(var(--accent) / 0.03) 0%, transparent 50%);
+		background-attachment: fixed;
 	}
 }
