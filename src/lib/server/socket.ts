@@ -1,4 +1,3 @@
-// src/lib/server/socket.ts
 import { Server } from 'socket.io';
 import type { Server as HTTPServer } from 'http';
 import { Groq } from 'groq-sdk';
