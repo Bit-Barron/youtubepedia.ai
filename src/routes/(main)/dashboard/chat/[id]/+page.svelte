@@ -26,7 +26,7 @@
 		const socketPort = isDev ? ':3000' : '';
 		const socketUrl = `${window.location.protocol}//${window.location.hostname}${socketPort}`;
 		socket = io(socketUrl, {
-			path: '/socket.io',
+			path: '/api/socket.io',
 			transports: ['polling', 'websocket'],
 			reconnection: true,
 			reconnectionAttempts: 5,
