@@ -18,14 +18,12 @@
 	let reconnectAttempts = 0;
 	const MAX_RECONNECT_ATTEMPTS = 5;
 
-	// Chat-History State
 	let chats = data.transcript.chats || [];
 
 	function initializeSocket() {
 		if (!browser) return;
 		const isDev = import.meta.env.DEV;
 		const socketPort = isDev ? ':3000' : '';
-		console.log('Initializing socket connection...');
 		const socketUrl = `${window.location.protocol}//${window.location.hostname}${socketPort}`;
 		socket = io(socketUrl, {
 			path: '/api/socket.io',
