@@ -10,7 +10,7 @@ node_modules
 .DS_Store
 Thumbs.db
 
-
+todo.txt
 # Env
 .env
 .env.*
