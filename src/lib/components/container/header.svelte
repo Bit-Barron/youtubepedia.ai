@@ -30,13 +30,15 @@
 
 <header class="border-b">
 	<div class="container mx-auto flex h-16 items-center justify-between px-4">
-		<div class="flex items-center">
+		<div class="flex items-center space-x-4">
 			<a href="/" class="text-2xl font-bold">Youtubepedia</a>
+			{#if data.user}
+				<a href="/dashboard" class="text-sm text-muted-foreground">{$_('recent-chats')}</a>
+			{/if}
 		</div>
 
 		<div class="hidden items-center space-x-4 md:flex">
 			{#if data.user}
-				<span class="flex items-start justify-start">Recent Chats</span>
 				<span class="text-sm text-muted-foreground">{data.user.email}</span>
 				<ThemeProvider />
 				<LanguageToggle />

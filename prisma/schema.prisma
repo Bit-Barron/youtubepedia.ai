@@ -26,14 +26,16 @@ model Session {
 }
 
 model Chat {
-  id          String     @id
-  userId      String
-  message     String
-  createdAt   DateTime
-  user        User       @relation(references: [id], fields: [userId], onDelete: Cascade)
-  transcript  Transcript? @relation(fields: [transcriptId], references: [id])
-  transcriptId String?
+  id           String     @id
+  userId       String
+  message      String
+  type         ChatType   // Add this enum field
+  createdAt    DateTime   @default(now())
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transcript   Transcript @relation(fields: [transcriptId], references: [id], onDelete: Cascade)
+  transcriptId String
 }
+
 
 model Transcript {
   id        String   @id
@@ -43,4 +45,9 @@ model Transcript {
   createdAt DateTime @default(now())
   user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
   chats     Chat[]
+}
+
+enum ChatType {
+  QUESTION
+  ANSWER
 }
