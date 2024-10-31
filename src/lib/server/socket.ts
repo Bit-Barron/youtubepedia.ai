@@ -1,5 +1,6 @@
 import { Server } from 'socket.io';
 import type { Server as HTTPServer } from 'http';
+import { WebSocketServer } from 'ws';
 import { Groq } from 'groq-sdk';
 import prisma from '@/utils/prisma';
 
@@ -8,12 +9,23 @@ const groqClient = new Groq({
 	apiKey: `${GROQ_API_KEY}`
 });
 
-export function createSocketServer(server: HTTPServer) {
+// Globale Socket.IO Instanz
+let io: Server | null = null;
+
+export function createSocketServer(server: HTTPServer | WebSocketServer) {
+	if (io) return io;
+
 	console.log('Creating Socket.IO server instance...');
 
-	const io = new Server(server, {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const httpServer = server instanceof WebSocketServer ? (server as any)._server : server;
+
+	io = new Server(httpServer, {
 		cors: {
-			origin: '*',
+			origin:
+				process.env.NODE_ENV === 'development'
+					? 'http://localhost:5173'
+					: 'https://youtubepedia.barron.agency',
 			methods: ['GET', 'POST'],
 			credentials: true
 		},
@@ -92,5 +104,10 @@ export function createSocketServer(server: HTTPServer) {
 		});
 	});
 
+	return io;
+}
+
+// Hilfsfunktion zum Abrufen der Socket.IO-Instanz
+export function getSocketIO(): Server | null {
 	return io;
 }

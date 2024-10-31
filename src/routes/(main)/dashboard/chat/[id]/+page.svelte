@@ -22,18 +22,16 @@
 
 	function initializeSocket() {
 		if (!browser) return;
-		const isDev = import.meta.env.DEV;
-		const socketPort = isDev ? ':3000' : '';
-		const socketUrl = `${window.location.protocol}//${window.location.hostname}${socketPort}`;
-		socket = io(socketUrl, {
+
+		const socketUrl = window.location.origin;
+		socket = io({
 			path: '/api/socket.io',
-			transports: ['polling', 'websocket'],
+			transports: ['websocket', 'polling'],
+			autoConnect: true,
 			reconnection: true,
-			reconnectionAttempts: 5,
-			reconnectionDelay: 1000,
-			timeout: 20000,
-			forceNew: true
+			reconnectionAttempts: 5
 		});
+
 		socket.on('connect', () => {
 			console.log('Socket connected with ID:', socket.id);
 			connected = true;
@@ -43,13 +41,18 @@
 		});
 
 		socket.on('connect_error', (err: { message: any }) => {
-			console.error('Connection error:', err);
+			console.error('Connection Details:', {
+				error: err,
+				transport: socket.io?.engine?.transport?.name,
+				url: socketUrl,
+				path: socket.io?.opts?.path,
+				readyState: socket.io?.engine?.transport?.ws?.readyState
+			});
 			reconnectAttempts++;
 			error = `Verbindungsfehler: ${err.message}. Versuche erneut zu verbinden...`;
 			connected = false;
 			loading = false;
 		});
-
 		socket.on('disconnect', (reason: string) => {
 			console.log('Disconnected:', reason);
 			connected = false;
