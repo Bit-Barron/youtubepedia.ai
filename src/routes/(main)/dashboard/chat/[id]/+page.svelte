@@ -7,7 +7,7 @@
 	import { browser } from '$app/environment';
 	import io from 'socket.io-client';
 
-	export let data: PageData;
+	export let data: any;
 
 	let question = '';
 	let loading = false;
@@ -23,11 +23,13 @@
 	function initializeSocket() {
 		if (!browser) return;
 
-		const socketUrl = window.location.origin;
-		socket = io({
-			path: '/api/socket.io',
-			transports: ['websocket', 'polling'],
-			autoConnect: true,
+		const isDev = import.meta.env.DEV;
+		const socketPort = isDev ? ':3000' : '';
+		console.log('Initializing socket connection...');
+		const socketUrl = `${window.location.protocol}//${window.location.hostname}${socketPort}`;
+		socket = io(socketUrl, {
+			path: '/socket.io',
+			transports: ['polling', 'websocket'],
 			reconnection: true,
 			reconnectionAttempts: 5
 		});

@@ -2,7 +2,28 @@ import { error, fail, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import prisma from '@/utils/prisma';
 
-export const load: PageServerLoad = async ({ params, locals }) => {
+// Definieren Sie den Chat-Typ
+type Chat = {
+	id: string;
+	userId: string;
+	message: string;
+	type: 'QUESTION' | 'ANSWER';
+	transcriptId: string;
+	createdAt: Date;
+};
+
+// Definieren Sie den Transcript-Typ mit chats
+type TranscriptWithChats = {
+	id: string;
+	userId: string;
+	videoUrl: string;
+	content: string;
+	createdAt: Date;
+	chats: Chat[];
+};
+
+// Typisieren Sie die Load-Funktion
+export const load: PageServerLoad = async ({ params, locals }): Promise<TranscriptWithChats> => {
 	const userId = locals.user?.id;
 	if (!userId) {
 		throw error(401, 'Unauthorized');
@@ -26,7 +47,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		throw error(404, 'Transcript not found');
 	}
 
-	return transcript;
+	return transcript as TranscriptWithChats;
 };
 
 export const actions = {
