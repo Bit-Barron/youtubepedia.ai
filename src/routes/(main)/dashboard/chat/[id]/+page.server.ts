@@ -30,7 +30,6 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		transcript
 	};
 };
-
 export const actions = {
 	ask: async ({ request, fetch, locals }) => {
 		try {

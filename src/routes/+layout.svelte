@@ -2,7 +2,7 @@
 	import '../app.css';
 	import { ModeWatcher } from 'mode-watcher';
 	import { Toaster } from '$lib/components/ui/sonner';
-	import Header from '@/components/container/header.svelte';
+	import Header from '$lib/components/container/header.svelte';
 	export let data;
 </script>
 
