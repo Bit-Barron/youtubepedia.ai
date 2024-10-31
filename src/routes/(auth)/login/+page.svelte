@@ -7,6 +7,9 @@
 	import { Label } from '$lib/components/ui/label/index.js';
 	import * as Separator from '$lib/components/ui/separator/index.js';
 	import { _ } from 'svelte-i18n';
+	import { toast } from 'svelte-sonner';
+
+	let isLoading = false;
 </script>
 
 <Card.Root>
@@ -15,7 +18,33 @@
 		<Card.Description>{$_('email-below')}</Card.Description>
 	</Card.Header>
 	<Card.Content>
-		<form use:enhance method="POST" class="grid gap-4">
+		<form
+			use:enhance={({}) => {
+				isLoading = true;
+
+				return async ({ result, update }) => {
+					isLoading = false;
+
+					if (result.type === 'failure') {
+						toast.error('Invalid email or password');
+						return;
+					}
+
+					if (result.type === 'success') {
+						toast.success('Logged in successfully!');
+						goto('/');
+					}
+
+					if (result.type === 'error') {
+						toast.error('Something went wrong. Please try again.');
+					}
+
+					await update();
+				};
+			}}
+			method="POST"
+			class="grid gap-4"
+		>
 			<div class="grid gap-2">
 				<Label for="email">Email</Label>
 				<Input

@@ -1,7 +1,7 @@
 import { generateId } from 'lucia';
 import { Argon2id } from 'oslo/password';
 import { lucia } from '$lib/server/auth.js';
-import { redirect, type Actions } from '@sveltejs/kit';
+import { fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import prisma from '@/utils/prisma';
 
@@ -21,6 +21,16 @@ export const actions = {
 		const { email, password } = Object.fromEntries(data) as Record<string, string>;
 		const userId = generateId(15);
 		const hashedPassword = await new Argon2id().hash(password);
+		const userAlreadyExists = await prisma.user.findFirst({
+			where: {
+				email
+			}
+		});
+
+		if (userAlreadyExists) {
+			return fail(400);
+		}
+
 		const user = await prisma.user.create({
 			data: {
 				id: userId,
