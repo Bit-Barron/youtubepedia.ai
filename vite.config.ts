@@ -1,4 +1,3 @@
-// vite.config.ts
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 import path from 'path';
@@ -7,8 +6,8 @@ export default defineConfig({
 	plugins: [sveltekit()],
 	server: {
 		proxy: {
-			'/api/socket.io': {
-				target: 'ws://localhost:3000',
+			'/api/socket': {
+				target: 'http://localhost:5173/',
 				ws: true
 			}
 		}

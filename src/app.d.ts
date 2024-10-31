@@ -5,6 +5,9 @@ declare global {
 			user: import('lucia').User | null;
 			session: import('lucia').Session | null;
 		}
+		interface Platform {
+			server: import('http').Server | import('ws').WebSocketServer;
+		}
 	}
 }
 

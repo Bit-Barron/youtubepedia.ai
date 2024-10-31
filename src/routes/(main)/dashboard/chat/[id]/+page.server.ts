@@ -26,10 +26,9 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		throw error(404, 'Transcript not found');
 	}
 
-	return {
-		transcript
-	};
+	return transcript;
 };
+
 export const actions = {
 	ask: async ({ request, fetch, locals }) => {
 		try {
@@ -45,8 +44,7 @@ export const actions = {
 
 			if (!transcript || !question || !transcriptId) {
 				return fail(400, {
-					success: false,
-					message: 'Missing transcript, question, or transcriptId'
+					success: false
 				});
 			}
 

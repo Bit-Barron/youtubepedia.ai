@@ -1,10 +1,9 @@
-// src/hooks.server.ts
 import { lucia } from '$lib/server/auth';
-import { createSocketServer } from '$lib/server/socket'; // Korrigierter Import
 import type { Handle } from '@sveltejs/kit';
 import { locale } from 'svelte-i18n';
 import type { Server as HTTPServer } from 'http';
-import type { Server as SocketIOServer } from 'socket.io';
+import { Server as SocketIOServer } from 'socket.io';
+import { WebSocketServer } from 'ws';
 
 declare global {
 	// eslint-disable-next-line no-var
@@ -12,18 +11,47 @@ declare global {
 }
 
 interface PlatformWithServer {
-	server?: HTTPServer;
+	server?: HTTPServer | WebSocketServer;
 }
 
 export const handle: Handle = async ({ event, resolve }) => {
-	// Socket.IO Server Setup
 	if (!global.__socketServer) {
 		const platform = event.platform as PlatformWithServer | undefined;
 
 		if (platform?.server) {
 			console.log('Setting up Socket.IO server...');
 			try {
-				global.__socketServer = createSocketServer(platform.server);
+				const httpServer =
+					platform.server instanceof WebSocketServer
+						? platform.server.options.server
+						: (platform.server as HTTPServer);
+
+				global.__socketServer = new SocketIOServer(httpServer, {
+					path: '/api/socket.io',
+					cors: {
+						origin: '*',
+						methods: ['GET', 'POST'],
+						credentials: true
+					},
+					transports: ['websocket', 'polling'],
+					pingTimeout: 60000,
+					pingInterval: 25000
+				});
+
+				global.__socketServer.on('connection', (socket) => {
+					console.log('New client connected:', socket.id);
+
+					socket.on('join_room', (transcriptId: string) => {
+						console.log(`Client ${socket.id} joining room:`, transcriptId);
+						socket.join(transcriptId);
+						socket.emit('room_joined', { room: transcriptId });
+					});
+
+					socket.on('disconnect', () => {
+						console.log('Client disconnected:', socket.id);
+					});
+				});
+
 				console.log('Socket.IO server setup complete');
 			} catch (error) {
 				console.error('Failed to setup Socket.IO server:', error);
@@ -33,7 +61,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 		}
 	}
 
-	// Locale Setup
 	const lang =
 		event.cookies.get('language') ||
 		event.request.headers.get('accept-language')?.split(',')[0] ||
@@ -41,7 +68,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	locale.set(lang);
 
-	// Lucia Auth Setup
 	const sessionId = event.cookies.get(lucia.sessionCookieName);
 
 	if (!sessionId) {
