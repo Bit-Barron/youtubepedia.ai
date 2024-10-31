@@ -12,13 +12,6 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		where: {
 			id: params.id,
 			userId
-		},
-		include: {
-			chats: {
-				orderBy: {
-					createdAt: 'asc'
-				}
-			}
 		}
 	});
 
@@ -26,38 +19,24 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		throw error(404, 'Transcript not found');
 	}
 
-	return transcript;
+	return {
+		transcript
+	};
 };
 
 export const actions = {
-	ask: async ({ request, fetch, locals }) => {
+	ask: async ({ request, fetch }) => {
 		try {
-			const userId = locals.user?.id;
-			if (!userId) {
-				throw error(401, 'Unauthorized');
-			}
-
 			const data = await request.formData();
-			const transcriptId = data.get('transcriptId')?.toString();
 			const transcript = data.get('transcript')?.toString();
 			const question = data.get('question')?.toString();
 
-			if (!transcript || !question || !transcriptId) {
+			if (!transcript || !question) {
 				return fail(400, {
-					success: false
+					success: false,
+					message: 'Missing transcript or question'
 				});
 			}
-
-			const questionChat = await prisma.chat.create({
-				data: {
-					id: crypto.randomUUID(),
-					userId,
-					message: question,
-					type: 'QUESTION',
-					transcriptId,
-					createdAt: new Date()
-				}
-			});
 
 			const response = await fetch('/api/ask', {
 				method: 'POST',
@@ -72,23 +51,7 @@ export const actions = {
 			}
 
 			const { answer } = await response.json();
-
-			const answerChat = await prisma.chat.create({
-				data: {
-					id: crypto.randomUUID(),
-					userId,
-					message: answer,
-					type: 'ANSWER',
-					transcriptId,
-					createdAt: new Date()
-				}
-			});
-
-			return {
-				success: true,
-				answer,
-				chats: [questionChat, answerChat]
-			};
+			return { success: true, answer };
 		} catch (e) {
 			console.error('Error:', e);
 			throw error(500, 'Failed to get answer');
