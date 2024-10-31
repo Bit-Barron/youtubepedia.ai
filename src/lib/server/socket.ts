@@ -9,7 +9,6 @@ const groqClient = new Groq({
 	apiKey: `${GROQ_API_KEY}`
 });
 
-// Globale Socket.IO Instanz
 let io: Server | null = null;
 
 export function createSocketServer(server: HTTPServer | WebSocketServer) {
@@ -17,8 +16,7 @@ export function createSocketServer(server: HTTPServer | WebSocketServer) {
 
 	console.log('Creating Socket.IO server instance...');
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const httpServer = server instanceof WebSocketServer ? (server as any)._server : server;
+	const httpServer = server instanceof WebSocketServer ? server : server;
 
 	io = new Server(httpServer, {
 		cors: {

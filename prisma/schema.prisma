@@ -15,6 +15,7 @@ model User {
   resetToken       String?     @unique
   resetTokenExpiry DateTime?
   chats            Chat[]
+  role             UserRole    @default(USER)
   transcripts      Transcript[]
 }
 
@@ -29,7 +30,7 @@ model Chat {
   id           String     @id
   userId       String
   message      String
-  type         ChatType   // Add this enum field
+  type         ChatType  
   createdAt    DateTime   @default(now())
   user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   transcript   Transcript @relation(fields: [transcriptId], references: [id], onDelete: Cascade)
@@ -45,6 +46,11 @@ model Transcript {
   createdAt DateTime @default(now())
   user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
   chats     Chat[]
+}
+
+enum UserRole {
+  USER
+  ADMIN
 }
 
 enum ChatType {
