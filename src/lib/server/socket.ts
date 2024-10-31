@@ -18,7 +18,7 @@ export function createSocketServer(server: HTTPServer) {
 			methods: ['GET', 'POST'],
 			credentials: true
 		},
-		path: '/api/socket.io',
+		path: '/socket.io',
 		transports: ['websocket', 'polling'],
 		pingTimeout: 60000,
 		pingInterval: 25000

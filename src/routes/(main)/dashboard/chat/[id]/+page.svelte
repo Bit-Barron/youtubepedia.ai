@@ -28,7 +28,7 @@
 		console.log('Initializing socket connection...');
 		const socketUrl = `${window.location.protocol}//${window.location.hostname}${socketPort}`;
 		socket = io(socketUrl, {
-			path: '/api/socket.io',
+			path: '/socket.io',
 			transports: ['polling', 'websocket'],
 			reconnection: true,
 			reconnectionAttempts: 5,
