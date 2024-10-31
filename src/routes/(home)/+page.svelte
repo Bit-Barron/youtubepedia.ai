@@ -6,42 +6,19 @@
 	import { goto } from '$app/navigation';
 	import { features } from '../../lib/utils/constants';
 	import { _ } from 'svelte-i18n';
+	import { enhance } from '$app/forms';
+	import { toast } from 'svelte-sonner';
 
 	let videoUrl = '';
 	let transcriptLoading = false;
+	let error = '';
 
-	async function handleTranscript() {
+	function validateYoutubeUrl(url: string): boolean {
 		try {
-			transcriptLoading = true;
-			const response = await fetch('/api/transcript', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({ video_url: videoUrl })
-			});
-
-			if (!response.ok) {
-				throw new Error('Failed to get transcript');
-			}
-
-			const data = await response.json();
-			const chatId = Math.random().toString(36).substring(2, 15);
-
-			sessionStorage.setItem(
-				`chat_${chatId}`,
-				JSON.stringify({
-					transcript: data.transcript,
-					videoUrl: videoUrl
-				})
-			);
-
-			goto(`/dashboard/chat/${chatId}`);
-		} catch (error) {
-			console.error('Error:', error);
-			alert('Failed to get transcript: ' + error);
-		} finally {
-			transcriptLoading = false;
+			const urlObj = new URL(url);
+			return urlObj.hostname.includes('youtube.com') || urlObj.hostname === 'youtu.be';
+		} catch {
+			return false;
 		}
 	}
 </script>
@@ -63,25 +40,60 @@
 				<CardContent class="p-6">
 					<h2 class="mb-4 text-xl font-semibold">{$_('get-started')}</h2>
 					<p class="mb-4 text-gray-400">{$_('youtube-url')}</p>
-					<div class="flex space-x-2">
-						<Input
-							type="text"
-							placeholder={$_('input-placeholder')}
-							bind:value={videoUrl}
-							class="flex-grow"
-						/>
-						<Button
-							on:click={handleTranscript}
-							variant="destructive"
-							disabled={transcriptLoading || !videoUrl}
-						>
-							{#if transcriptLoading}
-								{$_('processing')}
-							{:else}
-								{$_('get-transcript')}
+					<form
+						method="POST"
+						action="?/getTranscript"
+						use:enhance={() => {
+							error = '';
+							if (!validateYoutubeUrl(videoUrl)) {
+								error = 'Please enter a valid YouTube URL';
+								return;
+							}
+							transcriptLoading = true;
+
+							return async ({ result }: any) => {
+								transcriptLoading = false;
+								if (result.type === 'success') {
+									goto(`/dashboard/chat/${result.data?.transcriptId}`);
+								} else {
+									error = result.data?.message || 'Failed to get transcript';
+									toast.error(error);
+								}
+							};
+						}}
+					>
+						<div class="flex flex-col space-y-4">
+							<div class="flex space-x-2">
+								<Input
+									type="text"
+									name="videoUrl"
+									placeholder={$_('input-placeholder')}
+									bind:value={videoUrl}
+									class="flex-grow"
+								/>
+								<Button
+									type="submit"
+									variant="destructive"
+									disabled={transcriptLoading || !videoUrl}
+								>
+									{#if transcriptLoading}
+										<span class="flex items-center">
+											<span
+												class="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
+											></span>
+											{$_('processing')}
+										</span>
+									{:else}
+										{$_('get-transcript')}
+									{/if}
+								</Button>
+							</div>
+
+							{#if error}
+								<p class="text-sm text-red-500">{error}</p>
 							{/if}
-						</Button>
-					</div>
+						</div>
+					</form>
 
 					<div class="mt-4 flex items-center text-sm text-gray-400">
 						<AlertCircle class="mr-2 h-4 w-4" />
@@ -108,3 +120,5 @@
 		</footer>
 	</div>
 </div>
+
+Version 2 of 2

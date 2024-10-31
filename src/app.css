@@ -4,71 +4,73 @@
 
 @layer base {
 	:root {
-		/* Creative Professional Dashboard - Light */
-		--background: 228 40% 98%; /* Subtiles Blaugrau */
-		--foreground: 228 50% 15%;
+		/* Aurora Borealis - Light Theme */
+		--background: 185 30% 95%; /* Eisiger Himmel */
+		--foreground: 220 40% 20%;
 
-		/* Moderne, aber geschäftliche Hauptfarben */
-		--primary: 245 60% 60%; /* Geschäftliches, aber modernes Violett */
+		/* Hauptfarben inspiriert von Nordlichtern */
+		--primary: 158 55% 50%; /* Smaragdgrünes Aurora */
 		--primary-foreground: 0 0% 100%;
 
-		--secondary: 190 85% 45%; /* Frisches Cyan für Daten */
+		--secondary: 195 85% 55%; /* Elektrisches Blau */
 		--secondary-foreground: 0 0% 100%;
 
-		--accent: 280 75% 55%; /* Distinguiertes Lila für Akzente */
+		--accent: 280 65% 65%; /* Violettes Aurora */
 		--accent-foreground: 0 0% 100%;
 
-		/* Elegante Kartenfarben */
-		--card: 0 0% 100%;
-		--card-foreground: 228 50% 15%;
+		/* Frost-inspirierte Kartenfarben */
+		--card: 185 25% 97%;
+		--card-foreground: 220 40% 20%;
 
-		--muted: 228 20% 94%;
-		--muted-foreground: 228 30% 45%;
+		--muted: 185 20% 90%;
+		--muted-foreground: 220 25% 40%;
 
-		--popover: 228 40% 98%;
-		--popover-foreground: 228 50% 15%;
+		--popover: 185 30% 95%;
+		--popover-foreground: 220 40% 20%;
 
-		--border: 228 30% 92%;
-		--input: 228 30% 92%;
+		/* Eisige Akzente */
+		--border: 185 30% 85%;
+		--input: 185 30% 85%;
 
-		--destructive: 0 85% 60%;
+		--destructive: 345 95% 65%;
 		--destructive-foreground: 0 0% 100%;
 
-		--ring: 245 60% 60%;
-		--radius: 1rem;
+		--ring: 158 55% 50%;
+		--radius: 1.2rem;
 	}
 
 	.dark {
-		/* Creative Professional Dashboard - Dark */
-		--background: 228 35% 12%; /* Tiefes, professionelles Dunkel */
-		--foreground: 228 15% 95%;
+		/* Aurora Borealis - Dark Theme */
+		--background: 220 40% 10%; /* Nachthimmel */
+		--foreground: 185 25% 95%;
 
-		/* Strahlende Dark-Mode Farben */
-		--primary: 245 65% 65%;
+		/* Leuchtende Nordlichter im Dunkeln */
+		--primary: 158 70% 60%;
 		--primary-foreground: 0 0% 100%;
 
-		--secondary: 190 85% 50%;
+		--secondary: 195 90% 60%;
 		--secondary-foreground: 0 0% 100%;
 
-		--accent: 280 80% 60%;
+		--accent: 280 75% 70%;
 		--accent-foreground: 0 0% 100%;
 
-		--card: 228 30% 15%;
-		--card-foreground: 228 15% 95%;
+		/* Dunkle, aber leuchtende Karten */
+		--card: 220 35% 13%;
+		--card-foreground: 185 25% 95%;
 
-		--muted: 228 25% 20%;
-		--muted-foreground: 228 15% 70%;
+		--muted: 220 30% 15%;
+		--muted-foreground: 185 20% 75%;
 
-		--popover: 228 35% 12%;
-		--popover-foreground: 228 15% 95%;
+		--popover: 220 40% 10%;
+		--popover-foreground: 185 25% 95%;
 
-		--border: 228 25% 25%;
-		--input: 228 25% 25%;
+		--border: 220 35% 18%;
+		--input: 220 35% 18%;
 
-		--destructive: 0 85% 65%;
+		--destructive: 345 95% 65%;
 		--destructive-foreground: 0 0% 100%;
 
-		--ring: 245 65% 65%;
+		--ring: 158 70% 60%;
 	}
 }
 
@@ -79,14 +81,23 @@
 
 	body {
 		@apply bg-background text-foreground;
-		/* Moderner, subtiler Gradient-Mix */
+		/* Komplexer Aurora-Gradient */
 		background-image: radial-gradient(
-				ellipse 80% 50% at top center,
-				hsl(var(--primary) / 0.07),
-				transparent
+				ellipse 100% 80% at top center,
+				hsl(var(--primary) / 0.08),
+				transparent 70%
 			),
-			radial-gradient(ellipse 80% 50% at bottom center, hsl(var(--secondary) / 0.05), transparent),
-			linear-gradient(135deg, hsl(var(--accent) / 0.03) 0%, transparent 50%);
+			radial-gradient(
+				ellipse 100% 80% at bottom center,
+				hsl(var(--secondary) / 0.08),
+				transparent 70%
+			),
+			linear-gradient(
+				135deg,
+				hsl(var(--accent) / 0.06) 0%,
+				transparent 50%,
+				hsl(var(--primary) / 0.06) 100%
+			);
 		background-attachment: fixed;
 	}
 }

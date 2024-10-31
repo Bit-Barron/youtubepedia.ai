@@ -31,11 +31,12 @@
 <header class="border-b">
 	<div class="container mx-auto flex h-16 items-center justify-between px-4">
 		<div class="flex items-center">
-			<a href="/" class="text-2xl font-bold"> Youtubepedia </a>
+			<a href="/" class="text-2xl font-bold">Youtubepedia</a>
 		</div>
 
 		<div class="hidden items-center space-x-4 md:flex">
 			{#if data.user}
+				<span class="flex items-start justify-start">Recent Chats</span>
 				<span class="text-sm text-muted-foreground">{data.user.email}</span>
 				<ThemeProvider />
 				<LanguageToggle />
