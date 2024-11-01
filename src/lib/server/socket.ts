@@ -3,7 +3,7 @@ import { Server } from 'socket.io';
 import { Groq } from 'groq-sdk';
 
 const groqClient = new Groq({
-	apiKey: process.env.GROQ_API_KEY
+	apiKey: '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'
 });
 
 export const createWebSocketServer = {
@@ -16,7 +16,7 @@ export const createWebSocketServer = {
 		io.on('connection', async (socket) => {
 			console.log('Client connected');
 
-			socket.on('askQuestion', async (data) => {
+			socket.on('askQuestion', async (data) => { 
 				try {
 					console.log('Received question:', data.question);
 
