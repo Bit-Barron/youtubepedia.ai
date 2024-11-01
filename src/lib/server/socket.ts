@@ -5,9 +5,7 @@ import { Groq } from 'groq-sdk';
 import prisma from '@/utils/prisma';
 
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
-const groqClient = new Groq({
-	apiKey: `${GROQ_API_KEY}`
-});
+const groqClient = new Groq({ apiKey: `${GROQ_API_KEY}` });
 
 let io: Server | null = null;
 
@@ -16,9 +14,7 @@ export function createSocketServer(server: HTTPServer | WebSocketServer) {
 
 	console.log('Creating Socket.IO server instance...');
 
-	const httpServer = server instanceof WebSocketServer ? server : server;
-
-	io = new Server(httpServer, {
+	io = new Server(server, {
 		cors: {
 			origin:
 				process.env.NODE_ENV === 'development'
@@ -105,7 +101,13 @@ export function createSocketServer(server: HTTPServer | WebSocketServer) {
 	return io;
 }
 
-// Hilfsfunktion zum Abrufen der Socket.IO-Instanz
 export function getSocketIO(): Server | null {
 	return io;
+}
+
+export function cleanupSocketServer() {
+	if (io) {
+		io.close();
+		io = null;
+	}
 }

@@ -2,28 +2,7 @@ import { error, fail, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import prisma from '@/utils/prisma';
 
-// Definieren Sie den Chat-Typ
-type Chat = {
-	id: string;
-	userId: string;
-	message: string;
-	type: 'QUESTION' | 'ANSWER';
-	transcriptId: string;
-	createdAt: Date;
-};
-
-// Definieren Sie den Transcript-Typ mit chats
-type TranscriptWithChats = {
-	id: string;
-	userId: string;
-	videoUrl: string;
-	content: string;
-	createdAt: Date;
-	chats: Chat[];
-};
-
-// Typisieren Sie die Load-Funktion
-export const load: PageServerLoad = async ({ params, locals }): Promise<TranscriptWithChats> => {
+export const load: PageServerLoad = async ({ params, locals }) => {
 	const userId = locals.user?.id;
 	if (!userId) {
 		throw error(401, 'Unauthorized');
@@ -47,7 +26,9 @@ export const load: PageServerLoad = async ({ params, locals }): Promise<Transcri
 		throw error(404, 'Transcript not found');
 	}
 
-	return transcript as TranscriptWithChats;
+	return {
+		transcript
+	};
 };
 
 export const actions = {
@@ -55,7 +36,10 @@ export const actions = {
 		try {
 			const userId = locals.user?.id;
 			if (!userId) {
-				throw error(401, 'Unauthorized');
+				return fail(401, {
+					success: false,
+					message: 'Unauthorized'
+				});
 			}
 
 			const data = await request.formData();
@@ -65,10 +49,12 @@ export const actions = {
 
 			if (!transcript || !question || !transcriptId) {
 				return fail(400, {
-					success: false
+					success: false,
+					message: 'Missing required fields'
 				});
 			}
 
+			// Create the question chat entry
 			const questionChat = await prisma.chat.create({
 				data: {
 					id: crypto.randomUUID(),
@@ -88,17 +74,42 @@ export const actions = {
 				body: JSON.stringify({ transcript, question })
 			});
 
-			if (!response.ok) {
-				throw error(response.status, 'Failed to get answer');
+			const responseText = await response.text();
+			let responseData;
+
+			try {
+				responseData = JSON.parse(responseText);
+			} catch (e) {
+				return fail(500, {
+					success: false,
+					message: e
+				});
 			}
 
-			const { answer } = await response.json();
+			// Check for OpenAI context length error
+			if (
+				responseText.includes('context_length_exceeded') ||
+				responseText.includes('Please reduce the length of the messages')
+			) {
+				return fail(413, {
+					success: false,
+					message:
+						'The transcript is too long to process. Please try breaking your question into smaller parts or focus on a specific section.'
+				});
+			}
+
+			if (!response.ok) {
+				return fail(response.status, {
+					success: false,
+					message: 'Failed to get answer. Please try again.'
+				});
+			}
 
 			const answerChat = await prisma.chat.create({
 				data: {
 					id: crypto.randomUUID(),
 					userId,
-					message: answer,
+					message: responseData.answer,
 					type: 'ANSWER',
 					transcriptId,
 					createdAt: new Date()
@@ -107,12 +118,27 @@ export const actions = {
 
 			return {
 				success: true,
-				answer,
+				answer: responseData.answer,
 				chats: [questionChat, answerChat]
 			};
 		} catch (e) {
 			console.error('Error:', e);
-			throw error(500, 'Failed to get answer');
+			// Check if the error is related to context length
+			const errorMessage = e instanceof Error ? e.message : String(e);
+			if (
+				errorMessage.includes('context_length_exceeded') ||
+				errorMessage.includes('Please reduce the length of the messages')
+			) {
+				return fail(413, {
+					success: false,
+					message:
+						'The transcript is too long to process. Please try breaking your question into smaller parts or focus on a specific section.'
+				});
+			}
+			return fail(500, {
+				success: false,
+				message: 'An unexpected error occurred. Please try again.'
+			});
 		}
 	}
 } satisfies Actions;
