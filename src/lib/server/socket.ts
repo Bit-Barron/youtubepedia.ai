@@ -66,6 +66,7 @@ ${data.transcript}
 FRAGE:
 ${data.question}
 
+
 VORGABEN FÜR DIE BEANTWORTUNG:
 
 1. Quellenbasierung:
