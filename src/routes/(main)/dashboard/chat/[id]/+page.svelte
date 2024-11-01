@@ -13,11 +13,15 @@
 
 	let question = '';
 	let loading = false;
-	let answer = '';
 	let error = '';
 	let socket: Socket | null = null;
 	let chats = data.transcript.chats || [];
-	let isAnimatingAnswer = false;
+
+	// Neue Variablen für die Animation
+	let currentAnimatingChat: string | null = null;
+	let displayedWords: string[] = [];
+	let allWords: string[] = [];
+	let animationInterval: NodeJS.Timeout | null = null;
 
 	onMount(() => {
 		if (data.userId) {
@@ -38,9 +42,18 @@
 
 			socket?.on('new-answer', (chat) => {
 				console.log('New answer received:', chat);
-				chats = [...chats, { ...chat, isAnimating: true }];
-				answer = chat.message;
-				isAnimatingAnswer = true;
+				// Starte die Animation für die neue Antwort
+				startWordAnimation(chat);
+			});
+
+			// Neue Event-Handler für Wort-für-Wort Übertragung
+			socket?.on('answer-word', (data) => {
+				displayedWords = [...displayedWords, data.word];
+				updateCurrentChat(data.chatId, displayedWords.join(' '));
+			});
+
+			socket?.on('answer-complete', (chatId) => {
+				finishAnimation(chatId);
 			});
 		}
 	});
@@ -51,7 +64,47 @@
 			socket.disconnect();
 			socket = null;
 		}
+		if (animationInterval) {
+			clearInterval(animationInterval);
+		}
 	});
+
+	function startWordAnimation(chat: any) {
+		currentAnimatingChat = chat.id;
+		displayedWords = [];
+		allWords = chat.message.split(' ');
+
+		// Füge den Chat mit leerem Text hinzu
+		chats = [...chats, { ...chat, message: '', isAnimating: true }];
+
+		// Starte die Animation
+		let wordIndex = 0;
+		animationInterval = setInterval(() => {
+			if (wordIndex < allWords.length) {
+				displayedWords = [...displayedWords, allWords[wordIndex]];
+				updateCurrentChat(chat.id, displayedWords.join(' '));
+				wordIndex++;
+			} else {
+				finishAnimation(chat.id);
+			}
+		}, 100); // Geschwindigkeit der Animation (hier: 100ms pro Wort)
+	}
+
+	function updateCurrentChat(chatId: string, text: string) {
+		chats = chats.map((chat) => (chat.id === chatId ? { ...chat, message: text } : chat));
+	}
+
+	function finishAnimation(chatId: string) {
+		if (animationInterval) {
+			clearInterval(animationInterval);
+			animationInterval = null;
+		}
+		currentAnimatingChat = null;
+		chats = chats.map((chat) =>
+			chat.id === chatId ? { ...chat, isAnimating: false, message: allWords.join(' ') } : chat
+		);
+		loading = false;
+	}
 
 	function handleSubmit(e: Event) {
 		if (!question.trim()) {
@@ -65,14 +118,6 @@
 	function resetForm() {
 		question = '';
 		loading = false;
-	}
-
-	function handleAnimationComplete(chatId: string) {
-		chats = chats.map((chat) => (chat.id === chatId ? { ...chat, isAnimating: false } : chat));
-		if (chats[chats.length - 1]?.id === chatId) {
-			isAnimatingAnswer = false;
-			loading = false;
-		}
 	}
 </script>
 
@@ -99,7 +144,12 @@
 						</p>
 						<p class="mt-2">
 							{#if chat.type === 'ANSWER'}
-								<span>{chat.message}</span>
+								<span class:typing-animation={chat.id === currentAnimatingChat}>
+									{chat.message}
+									{#if chat.id === currentAnimatingChat}
+										<span class="cursor">|</span>
+									{/if}
+								</span>
 							{:else}
 								<span class="whitespace-pre-wrap">{chat.message}</span>
 							{/if}
@@ -154,10 +204,10 @@
 						bind:value={question}
 						placeholder="Ask a question about the video..."
 						class="flex-grow"
-						disabled={loading || isAnimatingAnswer}
+						disabled={loading || currentAnimatingChat !== null}
 					/>
 
-					{#if loading || isAnimatingAnswer}
+					{#if loading || currentAnimatingChat !== null}
 						<div
 							class="inline-flex items-center rounded-md bg-red-600 px-4 py-2 font-semibold text-white opacity-50"
 						>
@@ -180,3 +230,23 @@
 		</CardContent>
 	</Card>
 </div>
+
+<style>
+	.cursor {
+		animation: blink 1s step-end infinite;
+	}
+
+	@keyframes blink {
+		from,
+		to {
+			opacity: 1;
+		}
+		50% {
+			opacity: 0;
+		}
+	}
+
+	.typing-animation {
+		display: inline-block;
+	}
+</style>
