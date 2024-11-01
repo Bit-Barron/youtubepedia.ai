@@ -37,7 +37,7 @@ export const POST: RequestHandler = async ({ request }) => {
 			html: `
                 <h1>Password Reset Request</h1>
                 <p>Click the link below to reset your password. This link will expire in 1 hour.</p>
-                <a href="${process.env.PUBLIC_SITE_URL}/reset-password?token=${resetToken}">
+                <a href="https://youtubepedia.barron.agency/reset-password?token=${resetToken}">
                     Reset Password
                 </a>
             `
