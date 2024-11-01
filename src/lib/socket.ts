@@ -3,15 +3,17 @@ import { io, type Socket } from 'socket.io-client';
 
 export const initSocket = (userId: string): Socket | null => {
 	if (browser) {
-		const socketUrl = import.meta.env.PUBLIC_SOCKET_URL || window.location.origin;
-
-		const socket = io(socketUrl, {
+		const socket = io(window.location.origin, {
 			auth: { userId },
 			reconnection: true,
 			reconnectionDelay: 1000,
 			reconnectionAttempts: 5,
 			path: '/socket.io',
-			transports: ['websocket']
+			transports: ['websocket', 'polling']
+		});
+
+		socket.on('connect', () => {
+			console.log('Connected to socket server');
 		});
 
 		socket.on('connect_error', (error) => {

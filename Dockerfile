@@ -29,7 +29,6 @@ ARG SMTP_SERVICE
 ARG GOOGLE_CLIENT_ID
 ARG GOOGLE_CLIENT_SECRET
 ARG GROQ_API_KEY
-ARG PUBLIC_SOCKET_URL
 
 ENV DATABASE_URL=${DATABASE_URL}
 ENV SMTP_HOST=${SMTP_HOST}
@@ -41,16 +40,15 @@ ENV SMTP_SERVICE=${SMTP_SERVICE}
 ENV GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
 ENV GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
 ENV GROQ_API_KEY=${GROQ_API_KEY}
-ENV PUBLIC_SOCKET_URL=${PUBLIC_SOCKET_URL}
 
 COPY --from=builder /app/build ./build
 COPY --from=builder /app/package.json ./
 COPY --from=builder /app/pnpm-lock.yaml ./
 COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/src/server.js ./server.js
 
 RUN pnpm install --prod --frozen-lockfile
 
 EXPOSE 3000
-EXPOSE 3001
 
-CMD ["node", "build"]
+CMD ["node", "server.js"]
