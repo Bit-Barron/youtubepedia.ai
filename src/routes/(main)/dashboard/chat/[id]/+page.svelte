@@ -9,6 +9,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import type { Socket } from 'socket.io-client';
 	import AnimatedText from '@/components/elements/animated-text.svelte';
+	import { text } from '@sveltejs/kit';
 
 	export let data: PageData;
 
@@ -100,10 +101,7 @@
 						</p>
 						<p class="mt-2">
 							{#if chat.type === 'ANSWER'}
-								<AnimatedText
-									text={chat.message}
-									onComplete={() => handleAnimationComplete(chat.id)}
-								/>
+								<span>{chat.message}</span>
 							{:else}
 								<span class="whitespace-pre-wrap">{chat.message}</span>
 							{/if}
@@ -167,8 +165,8 @@
 						>
 							<span
 								class="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
-							/>
-							<span>Processing...</span>
+								><span>Processing...</span></span
+							>
 						</div>
 					{:else}
 						<Button type="submit" variant="destructive" disabled={!question.trim()}>Ask</Button>
