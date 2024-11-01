@@ -1,8 +1,16 @@
 import type { Handle } from '@sveltejs/kit';
 import { locale } from 'svelte-i18n';
 import { lucia } from '$lib/server/auth';
+import { initSocketIO } from '@/server/socket';
+
+let isSocketInitialized = false;
 
 export const handle: Handle = async ({ event, resolve }) => {
+	if (!isSocketInitialized && event.platform?.server) {
+		isSocketInitialized = true;
+		initSocketIO(event.platform.server);
+	}
+
 	const lang =
 		event.cookies.get('language') ||
 		event.request.headers.get('accept-language')?.split(',')[0] ||

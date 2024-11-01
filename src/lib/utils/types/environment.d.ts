@@ -12,3 +12,12 @@ declare namespace NodeJS {
 		GROQ_API_KEY: string;
 	}
 }
+
+declare global {
+	namespace App {
+		interface Platform {
+			socket?: SocketIOServer;
+			server?: Server;
+		}
+	}
+}
