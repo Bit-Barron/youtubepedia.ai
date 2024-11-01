@@ -2,10 +2,8 @@ import type { ViteDevServer } from 'vite';
 import { Server } from 'socket.io';
 import { Groq } from 'groq-sdk';
 
-console.log(process.env.GROQ_API_KEY);
-
 const groqClient = new Groq({
-	apiKey: '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'
+	apiKey: process.env.GROQ_API_KEY
 });
 
 export const createWebSocketServer = {
