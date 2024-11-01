@@ -25,8 +25,7 @@ export function setupSocketIO(server: HTTPServer) {
 
 				socket.emit('stream-start');
 
-				const systemPrompt = `Du bist ein KI-Assistent, der darauf spezialisiert ist, YouTube-Video-Transkripte zu analysieren und präzise Antworten zu geben.
-
+				const systemPrompt = `Du bist ein KI-Assistent, der darauf spezialisiert ist, YouTube-Video-Transkripte zu analysieren und präzise Antworten zu geben.	
 DEINE ROLLEN:
 - Agiere als erfahrener Content-Analyst
 - Sei ein zuverlässiger Informationsvermittler
