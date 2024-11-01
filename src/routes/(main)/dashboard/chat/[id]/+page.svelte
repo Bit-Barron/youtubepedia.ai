@@ -8,8 +8,6 @@
 	import { initSocket } from '$lib/socket';
 	import { onMount, onDestroy } from 'svelte';
 	import type { Socket } from 'socket.io-client';
-	import AnimatedText from '@/components/elements/animated-text.svelte';
-	import { text } from '@sveltejs/kit';
 
 	export let data: PageData;
 
