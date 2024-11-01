@@ -56,47 +56,5 @@
 				</Button>
 			{/if}
 		</div>
-
-		<Sheet>
-			<SheetTrigger class="md:hidden">
-				<Button variant="ghost" size="icon">
-					<Menu class="h-6 w-6" />
-				</Button>
-			</SheetTrigger>
-			<SheetContent>
-				<SheetHeader>
-					<SheetTitle>Youtubepedia</SheetTitle>
-				</SheetHeader>
-				<div class="grid gap-4 py-4">
-					<Button variant="ghost" href="/" class="w-full justify-start">
-						<Home class="mr-2 h-4 w-4" />
-						{$_('home')}
-					</Button>
-					<Button variant="ghost" href="/pricing" class="w-full justify-start">
-						<DollarSign class="mr-2 h-4 w-4" />
-						{$_('pricing')}
-					</Button>
-					<Button variant="ghost" href="/contact" class="w-full justify-start">
-						<Mail class="mr-2 h-4 w-4" />
-						{$_('contact')}
-					</Button>
-
-					<Separator />
-
-					{#if data.user}
-						<span class="px-4 text-sm text-muted-foreground">{data.user.email}</span>
-						<Button variant="destructive" on:click={handleLogout} class="w-full">
-							<LogOut class="mr-2 h-4 w-4" />
-							{$_('logout')}
-						</Button>
-					{:else}
-						<Button variant="default" href="/login" class="w-full">
-							<LogIn class="mr-2 h-4 w-4" />
-							{$_('login')}
-						</Button>
-					{/if}
-				</div>
-			</SheetContent>
-		</Sheet>
 	</div>
 </header>
