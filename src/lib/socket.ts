@@ -1,4 +1,3 @@
-// src/lib/socket.ts
 import { browser } from '$app/environment';
 import { io, type Socket } from 'socket.io-client';
 

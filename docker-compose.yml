@@ -20,14 +20,13 @@ services:
     networks:
       - proxy
     ports:
-      - '3001:3001' # Socket.IO Port
+      - '3001:3001'
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.youtubepedia.rule=Host(`youtubepedia.barron.agency`)'
       - 'traefik.http.routers.youtubepedia.entrypoints=websecure'
       - 'traefik.http.routers.youtubepedia.tls.certresolver=letsencrypt'
       - 'traefik.http.services.youtubepedia.loadbalancer.server.port=3000'
-      # WebSocket Configuration
       - 'traefik.http.middlewares.sio.headers.customrequestheaders.Upgrade=websocket'
       - 'traefik.http.middlewares.sio.headers.customrequestheaders.Connection=Upgrade'
       - 'traefik.http.routers.youtubepedia.middlewares=sio@docker'

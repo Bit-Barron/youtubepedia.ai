@@ -7,7 +7,7 @@ export const initSocketIO = (httpServer: HTTPServer) => {
 	if (!io) {
 		io = new Server(httpServer, {
 			cors: {
-				origin: process.env.PUBLIC_CLIENT_URL || 'http://localhost:3000',
+				origin: process.env.PUBLIC_CLIENT_URL || 'https://youtubepedia.barron.agency/',
 				methods: ['GET', 'POST'],
 				credentials: true
 			}
