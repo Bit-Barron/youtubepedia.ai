@@ -34,16 +34,16 @@ export const createWebSocketServer = {
 
 					const userPrompt = `Kontext: Das folgende ist ein Transkript eines YouTube-Videos:
 
-${data.transcript}
+					${data.transcript}
 
-Basierend auf diesem Transkript, beantworte bitte diese Frage:
-${data.question}
+					Basierend auf diesem Transkript, beantworte bitte diese Frage:
+					${data.question}
 
-Wichtig:
-1. Beziehe dich nur auf Informationen aus dem Transkript
-2. Wenn die Antwort nicht im Transkript zu finden ist, sage das ehrlich
-3. Verwende den gleichen Sprachstil wie im Transkript
-4. Zitiere wenn möglich relevante Passagen aus dem Transkript`;
+					Wichtig:
+					1. Beziehe dich nur auf Informationen aus dem Transkript
+					2. Wenn die Antwort nicht im Transkript zu finden ist, sage das ehrlich
+					3. Verwende den gleichen Sprachstil wie im Transkript
+					4. Zitiere wenn möglich relevante Passagen aus dem Transkript`;
 
 					const stream = await groqClient.chat.completions.create({
 						messages: [
