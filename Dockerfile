@@ -45,7 +45,6 @@ COPY --from=builder /app/build ./build
 COPY --from=builder /app/package.json ./
 COPY --from=builder /app/pnpm-lock.yaml ./
 COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/src/server.js ./server.js
 
 RUN pnpm install --prod --frozen-lockfile
 
