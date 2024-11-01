@@ -17,7 +17,9 @@
 	let connectionStatus = 'disconnected';
 
 	function initializeSocket() {
-		socket = io();
+		socket = io('http://localhost:3333', {
+			transports: ['websocket', 'polling']
+		});
 
 		socket.on('connect', () => {
 			connectionStatus = 'connected';

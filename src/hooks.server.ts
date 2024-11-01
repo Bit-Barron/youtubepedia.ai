@@ -1,5 +1,14 @@
 import { lucia } from '$lib/server/auth';
+import { setupSocketIO } from '@/server/socket';
 import type { Handle } from '@sveltejs/kit';
+import { createServer } from 'http';
+
+
+if (process.env.NODE_ENV === 'production') {
+	const server = createServer();
+	setupSocketIO(server);
+	server.listen(3000);
+}
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const sessionId = event.cookies.get(lucia.sessionCookieName);
