@@ -74,7 +74,7 @@
 
 		try {
 			socket.emit('askQuestion', {
-				transcript: data.transcript.content,
+				transcript: data.transcript?.content,
 				question
 			});
 		} catch (err) {
@@ -96,7 +96,7 @@
 		<CardContent class="p-6">
 			<h2 class="mb-4 text-xl font-semibold">Transcript</h2>
 			<div class="max-h-64 overflow-y-auto whitespace-pre-wrap">
-				{data.transcript.content}
+				{data.transcript?.content}
 			</div>
 		</CardContent>
 	</Card>

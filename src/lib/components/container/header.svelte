@@ -33,7 +33,7 @@
 		<div class="flex items-center space-x-4">
 			<a href="/" class="text-2xl font-bold">Youtubepedia</a>
 			{#if data.user}
-				<a href="/dashboard" class="text-sm text-muted-foreground">{$_('recent-chats')}</a>
+				<a href="/dashboard/chat/" class="text-sm text-muted-foreground">{$_('recent-chats')}</a>
 			{/if}
 		</div>
 
