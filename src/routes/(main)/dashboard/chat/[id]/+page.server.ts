@@ -54,7 +54,6 @@ export const actions = {
 				});
 			}
 
-			// Create the question chat entry
 			const questionChat = await prisma.chat.create({
 				data: {
 					id: crypto.randomUUID(),
@@ -86,7 +85,6 @@ export const actions = {
 				});
 			}
 
-			// Check for OpenAI context length error
 			if (
 				responseText.includes('context_length_exceeded') ||
 				responseText.includes('Please reduce the length of the messages')
@@ -123,7 +121,6 @@ export const actions = {
 			};
 		} catch (e) {
 			console.error('Error:', e);
-			// Check if the error is related to context length
 			const errorMessage = e instanceof Error ? e.message : String(e);
 			if (
 				errorMessage.includes('context_length_exceeded') ||

@@ -50,13 +50,16 @@
 					return async ({ result, update }) => {
 						loading = false;
 						if (result.type === 'success') {
-							answer = result.data?.answer as string || '';
+							answer = (result.data?.answer as string) || '';
 							error = '';
 							resetForm();
 						} else {
 							error = 'Failed to get answer';
 							if ('data' in result) {
-								error = typeof result.data?.message === 'string' ? result.data.message : 'Failed to get answer';
+								error =
+									typeof result.data?.message === 'string'
+										? result.data.message
+										: 'Failed to get answer';
 							}
 							if (error.includes('too long') || error.includes('context_length_exceeded')) {
 								error =
@@ -85,8 +88,8 @@
 						>
 							<span
 								class="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
-							/>
-							Processing
+								>Processing</span
+							>
 						</div>
 					{:else}
 						<div>
