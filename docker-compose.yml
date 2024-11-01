@@ -19,6 +19,8 @@ services:
     env_file: .env
     networks:
       - proxy
+    ports:
+      - '3001:3001' # Socket.IO Port
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.youtubepedia.rule=Host(`youtubepedia.barron.agency`)'

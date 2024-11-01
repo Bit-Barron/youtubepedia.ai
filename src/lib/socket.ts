@@ -1,15 +1,16 @@
+// src/lib/socket.ts
 import { browser } from '$app/environment';
 import { io, type Socket } from 'socket.io-client';
 
 export const initSocket = (userId: string): Socket | null => {
 	if (browser) {
-		const socket = io(window.location.origin, {
+		const socketUrl = `${window.location.protocol}//${window.location.hostname}:3001`;
+
+		const socket = io(socketUrl, {
 			auth: { userId },
 			reconnection: true,
 			reconnectionDelay: 1000,
-			reconnectionAttempts: 5,
-			path: '/socket.io',
-			transports: ['websocket', 'polling']
+			reconnectionAttempts: 5
 		});
 
 		socket.on('connect', () => {
