@@ -5,6 +5,10 @@
 	import { Card, CardContent } from '$lib/components/ui/card';
 	import { Alert, AlertDescription } from '@/components/ui/alert';
 	import type { PageData } from './$types';
+	import { initSocket } from '$lib/socket';
+	import { onMount, onDestroy } from 'svelte';
+	import type { Socket } from 'socket.io-client';
+	import AnimatedText from '@/components/elements/animated-text.svelte';
 
 	export let data: PageData;
 
@@ -12,6 +16,43 @@
 	let loading = false;
 	let answer = '';
 	let error = '';
+	let socket: Socket | null = null;
+	let chats = data.transcript.chats || [];
+	let isAnimatingAnswer = false;
+
+	onMount(() => {
+		if (data.userId) {
+			socket = initSocket(data.userId);
+
+			socket?.on('connect', () => {
+				console.log('Connected to chat server');
+			});
+
+			socket?.on('connect_error', (error) => {
+				console.error('Connection error:', error);
+			});
+
+			socket?.on('new-question', (chat) => {
+				console.log('New question received:', chat);
+				chats = [...chats, chat];
+			});
+
+			socket?.on('new-answer', (chat) => {
+				console.log('New answer received:', chat);
+				chats = [...chats, { ...chat, isAnimating: true }];
+				answer = chat.message;
+				isAnimatingAnswer = true;
+			});
+		}
+	});
+
+	onDestroy(() => {
+		if (socket) {
+			console.log('Disconnecting socket');
+			socket.disconnect();
+			socket = null;
+		}
+	});
 
 	function handleSubmit(e: Event) {
 		if (!question.trim()) {
@@ -26,14 +67,52 @@
 		question = '';
 		loading = false;
 	}
+
+	function handleAnimationComplete(chatId: string) {
+		chats = chats.map((chat) => (chat.id === chatId ? { ...chat, isAnimating: false } : chat));
+		if (chats[chats.length - 1]?.id === chatId) {
+			isAnimatingAnswer = false;
+			loading = false;
+		}
+	}
 </script>
 
 <div class="container mx-auto px-4 py-8">
 	<Card class="mb-8">
 		<CardContent class="p-6">
 			<h2 class="mb-4 text-xl font-semibold">Transcript</h2>
-			<div class="max-h-64 overflow-y-auto whitespace-pre-wrap">
+			<div
+				class="max-h-64 overflow-y-auto whitespace-pre-wrap rounded-lg border border-gray-200 p-4"
+			>
 				{data.transcript.content}
+			</div>
+		</CardContent>
+	</Card>
+
+	<Card class="mb-8">
+		<CardContent class="p-6">
+			<h2 class="mb-4 text-xl font-semibold">Chat History</h2>
+			<div class="space-y-4">
+				{#each chats as chat (chat.id)}
+					<div class="rounded-lg p-4 shadow-sm transition-colors duration-200">
+						<p class="font-semibold">
+							{chat.type === 'QUESTION' ? '❓ Question:' : '💡 Answer:'}
+						</p>
+						<p class="mt-2">
+							{#if chat.type === 'ANSWER'}
+								<AnimatedText
+									text={chat.message}
+									onComplete={() => handleAnimationComplete(chat.id)}
+								/>
+							{:else}
+								<span class="whitespace-pre-wrap">{chat.message}</span>
+							{/if}
+						</p>
+						<p class="mt-2 text-sm text-gray-500">
+							{new Date(chat.createdAt).toLocaleString()}
+						</p>
+					</div>
+				{/each}
 			</div>
 		</CardContent>
 	</Card>
@@ -48,12 +127,11 @@
 				use:enhance={() => {
 					loading = true;
 					return async ({ result, update }) => {
-						loading = false;
 						if (result.type === 'success') {
-							answer = (result.data?.answer as string) || '';
 							error = '';
 							resetForm();
 						} else {
+							loading = false;
 							error = 'Failed to get answer';
 							if ('data' in result) {
 								error =
@@ -80,21 +158,20 @@
 						bind:value={question}
 						placeholder="Ask a question about the video..."
 						class="flex-grow"
+						disabled={loading || isAnimatingAnswer}
 					/>
 
-					{#if loading}
+					{#if loading || isAnimatingAnswer}
 						<div
 							class="inline-flex items-center rounded-md bg-red-600 px-4 py-2 font-semibold text-white opacity-50"
 						>
 							<span
 								class="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
-								>Processing</span
-							>
+							/>
+							<span>Processing...</span>
 						</div>
 					{:else}
-						<div>
-							<Button type="submit" variant="destructive">Ask</Button>
-						</div>
+						<Button type="submit" variant="destructive" disabled={!question.trim()}>Ask</Button>
 					{/if}
 				</div>
 
@@ -104,13 +181,6 @@
 					</Alert>
 				{/if}
 			</form>
-
-			{#if answer}
-				<div class="mt-6">
-					<h3 class="mb-2 font-semibold">Answer:</h3>
-					<p class="whitespace-pre-wrap">{answer}</p>
-				</div>
-			{/if}
 		</CardContent>
 	</Card>
 </div>

@@ -1,6 +1,7 @@
 import { error, fail, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import prisma from '@/utils/prisma';
+import { getIO } from '@/server/socket';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
 	const userId = locals.user?.id;
@@ -27,7 +28,8 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	}
 
 	return {
-		transcript
+		transcript,
+		userId
 	};
 };
 
@@ -65,6 +67,9 @@ export const actions = {
 				}
 			});
 
+			const io = getIO();
+			io.to(userId).emit('new-question', questionChat);
+
 			const response = await fetch('/api/ask', {
 				method: 'POST',
 				headers: {
@@ -85,17 +90,6 @@ export const actions = {
 				});
 			}
 
-			if (
-				responseText.includes('context_length_exceeded') ||
-				responseText.includes('Please reduce the length of the messages')
-			) {
-				return fail(413, {
-					success: false,
-					message:
-						'The transcript is too long to process. Please try breaking your question into smaller parts or focus on a specific section.'
-				});
-			}
-
 			if (!response.ok) {
 				return fail(response.status, {
 					success: false,
@@ -103,6 +97,7 @@ export const actions = {
 				});
 			}
 
+			// Create answer chat
 			const answerChat = await prisma.chat.create({
 				data: {
 					id: crypto.randomUUID(),
@@ -114,6 +109,8 @@ export const actions = {
 				}
 			});
 
+			io.to(userId).emit('new-answer', answerChat);
+
 			return {
 				success: true,
 				answer: responseData.answer,
@@ -121,17 +118,6 @@ export const actions = {
 			};
 		} catch (e) {
 			console.error('Error:', e);
-			const errorMessage = e instanceof Error ? e.message : String(e);
-			if (
-				errorMessage.includes('context_length_exceeded') ||
-				errorMessage.includes('Please reduce the length of the messages')
-			) {
-				return fail(413, {
-					success: false,
-					message:
-						'The transcript is too long to process. Please try breaking your question into smaller parts or focus on a specific section.'
-				});
-			}
 			return fail(500, {
 				success: false,
 				message: 'An unexpected error occurred. Please try again.'

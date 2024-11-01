@@ -2,6 +2,14 @@ import type { Handle } from '@sveltejs/kit';
 import { locale } from 'svelte-i18n';
 import { lucia } from '$lib/server/auth';
 import { initSocketIO } from '@/server/socket';
+import { createServer } from 'http';
+
+const httpServer = createServer();
+initSocketIO(httpServer);
+
+httpServer.listen(3001, () => {
+	console.log('Socket.IO server listening on port 3001');
+});
 
 let isSocketInitialized = false;
 
