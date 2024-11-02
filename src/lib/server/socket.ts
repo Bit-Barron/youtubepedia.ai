@@ -11,17 +11,13 @@ export const initSocketIO = (httpServer: HTTPServer): Promise<Server> => {
 			if (!io) {
 				console.log('Initializing Socket.IO server...');
 				io = new Server(httpServer, {
-					path: '/socket.io/',
+					path: '/socket.io',
 					cors: {
 						origin: dev ? ['http://localhost:3000'] : ['https://youtubepedia.barron.agency'],
 						methods: ['GET', 'POST'],
 						credentials: true
 					},
-					transports: ['websocket', 'polling'],
-					pingTimeout: 60000,
-					pingInterval: 25000,
-					connectTimeout: 45000,
-					allowEIO3: true
+					transports: ['websocket', 'polling']
 				});
 
 				io.on('connection', (socket) => {
@@ -33,12 +29,8 @@ export const initSocketIO = (httpServer: HTTPServer): Promise<Server> => {
 						console.log(`User ${userId} joined their room`);
 					}
 
-					socket.on('error', (error) => {
-						console.error('Socket error:', error);
-					});
-
-					socket.on('disconnect', (reason) => {
-						console.log(`Client disconnected (${reason})`, socket.id);
+					socket.on('disconnect', () => {
+						console.log('Client disconnected', socket.id);
 					});
 				});
 
