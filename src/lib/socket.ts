@@ -11,6 +11,7 @@ export const initSocket = (userId: string): Socket | null => {
 			reconnectionAttempts: 5,
 			path: '/socket.io' // Muss mit Server-Path übereinstimmen
 		});
+		
 
 		socket.on('connect', () => {
 			console.log('Connected to socket server');
