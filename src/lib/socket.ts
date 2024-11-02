@@ -9,8 +9,7 @@ export const initSocket = (userId: string): Socket | null => {
 			auth: { userId },
 			reconnection: true,
 			reconnectionDelay: 1000,
-			reconnectionAttempts: 5,
-			path: '/socket.io'
+			reconnectionAttempts: 5
 		});
 
 		socket.on('connect', () => {
