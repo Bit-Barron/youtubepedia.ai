@@ -3,7 +3,7 @@ import { io, type Socket } from 'socket.io-client';
 
 export const initSocket = (userId: string): Socket | null => {
 	if (browser) {
-		const socketUrl = `${window.location.protocol}//${window.location.hostname}:3001`;
+		const socketUrl = `${window.location.protocol}//${window.location.host}`;
 
 		const socket = io(socketUrl, {
 			auth: { userId },
