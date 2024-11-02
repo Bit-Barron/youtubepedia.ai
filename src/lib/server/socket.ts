@@ -8,37 +8,63 @@ declare global {
 	var __socketio: Server | null;
 }
 
+const SOCKET_CONFIG: Partial<ServerOptions> = {
+	path: '/socket.io',
+	cors: {
+		origin: dev ? ['http://localhost:3000'] : ['https://youtubepedia.barron.agency'],
+		methods: ['GET', 'POST'],
+		credentials: true,
+		allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+	},
+	transports: ['polling', 'websocket'],
+	allowUpgrades: true,
+	upgradeTimeout: 10000,
+	pingInterval: 25000,
+	pingTimeout: 20000,
+	connectTimeout: 45000,
+	allowEIO3: true,
+	maxHttpBufferSize: 1e8,
+	perMessageDeflate: {
+		threshold: 1024
+	},
+	httpCompression: {
+		threshold: 1024
+	},
+	cookie: {
+		name: 'io',
+		path: '/',
+		httpOnly: true,
+		sameSite: 'lax'
+	}
+};
+
 export const initSocketIO = (httpServer: HTTPServer): void => {
 	if (!global.__socketio) {
 		console.log('Initializing Socket.IO server...');
-		const io = new Server(httpServer, {
-			path: '/socket.io',
-			cors: {
-				origin: dev ? ['http://localhost:3000'] : ['https://youtubepedia.barron.agency'],
-				methods: ['GET', 'POST'],
-				credentials: true
-			},
-			transports: ['polling', 'websocket'],
-			allowUpgrades: true,
-			upgradeTimeout: 10000,
-			pingInterval: 10000,
-			pingTimeout: 5000,
-			cookie: {
-				name: 'io',
-				path: '/',
-				httpOnly: true,
-				sameSite: 'strict'
-			},
-			allowEIO3: true,
-			connectTimeout: 45000
-		} as Partial<ServerOptions>);
+		const io = new Server(httpServer, SOCKET_CONFIG);
 
 		io.engine.on('connection_error', (err) => {
 			console.log('Connection error:', err);
 		});
 
+		io.engine.on('initial_headers', (headers: Record<string, string>) => {
+			headers['Access-Control-Allow-Credentials'] = 'true';
+			if (dev) {
+				headers['Access-Control-Allow-Origin'] = 'http://localhost:3000';
+			} else {
+				headers['Access-Control-Allow-Origin'] = 'https://youtubepedia.barron.agency';
+			}
+		});
+
 		io.on('connection', (socket) => {
-			console.log('Client connected', socket.id, 'transport:', socket.conn.transport.name);
+			console.log(
+				'Client connected',
+				socket.id,
+				'transport:',
+				socket.conn.transport.name,
+				'headers:',
+				socket.handshake.headers
+			);
 
 			const userId = socket.handshake.auth.userId;
 			if (userId) {
@@ -48,6 +74,10 @@ export const initSocketIO = (httpServer: HTTPServer): void => {
 
 			socket.on('disconnect', (reason) => {
 				console.log('Client disconnected', socket.id, 'reason:', reason);
+			});
+
+			socket.on('error', (error) => {
+				console.error('Socket error:', error);
 			});
 		});
 
