@@ -28,10 +28,6 @@ services:
       - 'traefik.http.routers.youtubepedia.entrypoints=websecure'
       - 'traefik.http.routers.youtubepedia.tls.certresolver=letsencrypt'
       - 'traefik.http.services.youtubepedia.loadbalancer.server.port=3000'
-      # WebSocket Middleware
-      - 'traefik.http.middlewares.youtubepedia-ws.headers.customrequestheaders.Connection=Upgrade'
-      - 'traefik.http.middlewares.youtubepedia-ws.headers.customrequestheaders.Upgrade=websocket'
-      - 'traefik.http.routers.youtubepedia.middlewares=youtubepedia-ws'
 
 networks:
   proxy:
