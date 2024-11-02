@@ -1,4 +1,3 @@
-# docker-compose.yml
 services:
   youtubepedia:
     container_name: youtubepedia
@@ -20,37 +19,19 @@ services:
     env_file: .env
     networks:
       - proxy
+    ports:
+      - '3001:3001'
     labels:
-      # Basic Traefik configuration
-      - "traefik.enable=true"
-      - "traefik.docker.network=proxy"
-      
-      # HTTP Router configuration
-      - "traefik.http.routers.youtubepedia.rule=Host(`youtubepedia.barron.agency`)"
-      - "traefik.http.routers.youtubepedia.entrypoints=websecure"
-      - "traefik.http.routers.youtubepedia.tls.certresolver=letsencrypt"
-      
-      # Service configuration
-      - "traefik.http.services.youtubepedia.loadbalancer.server.port=3000"
-      
-      # Middleware configurations
-      - "traefik.http.middlewares.youtubepedia-ws.headers.customrequestheaders.Upgrade=websocket"
-      - "traefik.http.middlewares.youtubepedia-ws.headers.customrequestheaders.Connection=Upgrade"
-      - "traefik.http.routers.youtubepedia.middlewares=youtubepedia-ws,security-headers"
-      
-      # Additional security headers
-      - "traefik.http.middlewares.security-headers.headers.sslredirect=true"
-      - "traefik.http.middlewares.security-headers.headers.stsSeconds=31536000"
-      - "traefik.http.middlewares.security-headers.headers.forceSTSHeader=true"
-
-      # Socket.IO specific configuration
-      - "traefik.http.routers.youtubepedia-socket.rule=Host(`youtubepedia.barron.agency`) && PathPrefix(`/socket.io`)"
-      - "traefik.http.routers.youtubepedia-socket.service=youtubepedia-socket"
-      - "traefik.http.services.youtubepedia-socket.loadbalancer.server.port=3001"
-      - "traefik.http.routers.youtubepedia-socket.entrypoints=websecure"
-      - "traefik.http.routers.youtubepedia-socket.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.youtubepedia-socket.middlewares=youtubepedia-ws"
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.youtubepedia.rule=Host(`youtubepedia.barron.agency`)'
+      - 'traefik.http.routers.youtubepedia.entrypoints=websecure'
+      - 'traefik.http.routers.youtubepedia.tls.certresolver=letsencrypt'
+      - 'traefik.http.services.youtubepedia.loadbalancer.server.port=3000'
+      - 'traefik.http.middlewares.sio.headers.customrequestheaders.Upgrade=websocket'
+      - 'traefik.http.middlewares.sio.headers.customrequestheaders.Connection=Upgrade'
+      - 'traefik.http.routers.youtubepedia.middlewares=sio@docker'
 
 networks:
   proxy:
-    external: true
+    external: false
+    name: proxy
