@@ -1,4 +1,3 @@
-# Dockerfile
 FROM node:20-alpine AS builder
 
 WORKDIR /app
@@ -20,7 +19,6 @@ WORKDIR /app
 
 RUN npm install -g pnpm
 
-# Environment Variables
 ARG DATABASE_URL
 ARG SMTP_HOST
 ARG SMTP_PORT
@@ -50,9 +48,6 @@ COPY --from=builder /app/pnpm-lock.yaml ./
 COPY --from=builder /app/prisma ./prisma
 
 RUN pnpm install --prod --frozen-lockfile
-
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1
 
 EXPOSE 3000
 
