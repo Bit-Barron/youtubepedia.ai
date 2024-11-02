@@ -68,9 +68,8 @@ export const actions = {
 			});
 
 			const io = getIO();
-			const working = io.to(userId).emit('new-question', questionChat);
+			io.to(userId).emit('new-question', questionChat);
 
-			console.log(working);
 			const response = await fetch('/api/ask', {
 				method: 'POST',
 				headers: {

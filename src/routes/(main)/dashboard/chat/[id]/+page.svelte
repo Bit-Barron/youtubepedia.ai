@@ -108,16 +108,10 @@
 </script>
 
 <div class="container mx-auto px-4 py-8">
-	<Card class="mb-8">
-		<CardContent class="p-6">
-			<h2 class="mb-4 text-xl font-semibold">Transcript</h2>
-			<div
-				class="max-h-64 overflow-y-auto whitespace-pre-wrap rounded-lg border border-gray-200 p-4"
-			>
-				{data.transcript.content}
-			</div>
-		</CardContent>
-	</Card>
+	<h2 class="mb-4 text-xl font-semibold">Transcript</h2>
+	<div class="max-h-64 overflow-y-auto whitespace-pre-wrap rounded-lg border p-4">
+		{data.transcript.content}
+	</div>
 
 	<Card class="mb-8">
 		<CardContent class="p-6">
