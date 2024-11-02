@@ -20,23 +20,29 @@ services:
     networks:
       - proxy
     ports:
-      - '3001:3001'
+      - '3001:3001' # Socket.IO port
+      - '3000:3000' # Main app port
     labels:
       - 'traefik.enable=true'
-      # HTTP Router
+      # Main application router
       - 'traefik.http.routers.youtubepedia.rule=Host(`youtubepedia.barron.agency`)'
       - 'traefik.http.routers.youtubepedia.entrypoints=websecure'
       - 'traefik.http.routers.youtubepedia.tls.certresolver=letsencrypt'
       - 'traefik.http.services.youtubepedia.loadbalancer.server.port=3000'
-      # WebSocket Router
-      - 'traefik.http.routers.youtubepedia-ws.rule=Host(`youtubepedia.barron.agency`) && PathPrefix(`/socket.io`)'
-      - 'traefik.http.routers.youtubepedia-ws.entrypoints=websecure'
-      - 'traefik.http.routers.youtubepedia-ws.tls.certresolver=letsencrypt'
-      - 'traefik.http.services.youtubepedia-ws.loadbalancer.server.port=3001'
-      # WebSocket Middleware
-      - 'traefik.http.middlewares.youtubepedia-ws.headers.customrequestheaders.Connection=Upgrade'
-      - 'traefik.http.middlewares.youtubepedia-ws.headers.customrequestheaders.Upgrade=websocket'
-      - 'traefik.http.routers.youtubepedia-ws.middlewares=youtubepedia-ws'
+
+      # Socket.IO specific router
+      - 'traefik.http.routers.youtubepedia-socket.rule=Host(`youtubepedia.barron.agency`) && PathPrefix(`/socket.io`)'
+      - 'traefik.http.routers.youtubepedia-socket.entrypoints=websecure'
+      - 'traefik.http.routers.youtubepedia-socket.service=youtubepedia-socket-service'
+      - 'traefik.http.routers.youtubepedia-socket.tls.certresolver=letsencrypt'
+
+      # Socket.IO service definition
+      - 'traefik.http.services.youtubepedia-socket-service.loadbalancer.server.port=3001'
+
+      # WebSocket middleware
+      - 'traefik.http.middlewares.ws-middleware.headers.customrequestheaders.Connection=Upgrade'
+      - 'traefik.http.middlewares.ws-middleware.headers.customrequestheaders.Upgrade=websocket'
+      - 'traefik.http.routers.youtubepedia-socket.middlewares=ws-middleware'
 
 networks:
   proxy:
