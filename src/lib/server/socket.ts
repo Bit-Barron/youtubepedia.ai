@@ -11,8 +11,7 @@ export const initSocketIO = (httpServer: HTTPServer) => {
 				methods: ['GET', 'POST'],
 				credentials: true
 			}
-		});
-
+		}); //'https://youtubepedia.barron.agency'
 		io.on('connection', (socket) => {
 			console.log('Client connected', socket.id);
 
