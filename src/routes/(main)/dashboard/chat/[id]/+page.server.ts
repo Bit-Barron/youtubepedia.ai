@@ -97,7 +97,6 @@ export const actions = {
 				});
 			}
 
-			// Create answer chat
 			const answerChat = await prisma.chat.create({
 				data: {
 					id: crypto.randomUUID(),

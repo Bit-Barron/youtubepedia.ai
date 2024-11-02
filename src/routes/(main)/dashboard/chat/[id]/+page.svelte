@@ -17,7 +17,6 @@
 	let socket: Socket | null = null;
 	let chats = data.transcript.chats || [];
 
-	// Neue Variablen für die Animation
 	let currentAnimatingChat: string | null = null;
 	let displayedWords: string[] = [];
 	let allWords: string[] = [];
@@ -42,11 +41,9 @@
 
 			socket?.on('new-answer', (chat) => {
 				console.log('New answer received:', chat);
-				// Starte die Animation für die neue Antwort
 				startWordAnimation(chat);
 			});
 
-			// Neue Event-Handler für Wort-für-Wort Übertragung
 			socket?.on('answer-word', (data) => {
 				displayedWords = [...displayedWords, data.word];
 				updateCurrentChat(data.chatId, displayedWords.join(' '));
@@ -74,10 +71,8 @@
 		displayedWords = [];
 		allWords = chat.message.split(' ');
 
-		// Füge den Chat mit leerem Text hinzu
 		chats = [...chats, { ...chat, message: '', isAnimating: true }];
 
-		// Starte die Animation
 		let wordIndex = 0;
 		animationInterval = setInterval(() => {
 			if (wordIndex < allWords.length) {
@@ -87,7 +82,7 @@
 			} else {
 				finishAnimation(chat.id);
 			}
-		}, 100); // Geschwindigkeit der Animation (hier: 100ms pro Wort)
+		}, 100);
 	}
 
 	function updateCurrentChat(chatId: string, text: string) {
@@ -104,15 +99,6 @@
 			chat.id === chatId ? { ...chat, isAnimating: false, message: allWords.join(' ') } : chat
 		);
 		loading = false;
-	}
-
-	function handleSubmit(e: Event) {
-		if (!question.trim()) {
-			error = 'Please enter a question';
-			return;
-		}
-		loading = true;
-		error = '';
 	}
 
 	function resetForm() {
