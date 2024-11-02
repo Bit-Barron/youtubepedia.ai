@@ -19,20 +19,16 @@ services:
     env_file: .env
     networks:
       - proxy
-    ports:
-      - '3000:3000'
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.youtubepedia.rule=Host(`youtubepedia.barron.agency`)'
       - 'traefik.http.routers.youtubepedia.entrypoints=websecure'
       - 'traefik.http.routers.youtubepedia.tls.certresolver=letsencrypt'
       - 'traefik.http.services.youtubepedia.loadbalancer.server.port=3000'
-      # WebSocket Konfiguration
       - 'traefik.http.middlewares.youtubepedia-ws.headers.customrequestheaders.Upgrade=websocket'
       - 'traefik.http.middlewares.youtubepedia-ws.headers.customrequestheaders.Connection=Upgrade'
       - 'traefik.http.routers.youtubepedia.middlewares=youtubepedia-ws'
 
 networks:
   proxy:
-    external: false
-    name: proxy
+    external: true
