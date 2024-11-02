@@ -40,7 +40,6 @@ const webSocketServer = {
 			});
 		});
 
-		// Debug Event Handler
 		io.engine?.on('connection_error', (err) => {
 			console.error('Connection error:', err);
 		});
