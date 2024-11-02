@@ -1,22 +1,24 @@
+/* eslint-disable no-var */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Handle } from '@sveltejs/kit';
 import { locale } from 'svelte-i18n';
 import { lucia } from '$lib/server/auth';
 import { initSocketIO } from '@/server/socket';
-import { createServer } from 'http';
 
-const httpServer = createServer();
-initSocketIO(httpServer);
-
-httpServer.listen(3001, () => {
-	console.log('Socket.IO server listening on port 3001');
-});
-
-let isSocketInitialized = false;
+declare global {
+	var __socketio: import('socket.io').Server<import('socket.io').DefaultEventsMap, import('socket.io').DefaultEventsMap, import('socket.io').DefaultEventsMap, any> | null;
+}
 
 export const handle: Handle = async ({ event, resolve }) => {
-	if (!isSocketInitialized && event.platform?.server) {
-		isSocketInitialized = true;
-		initSocketIO(event.platform.server);
+	// Initialize socket.io if not already initialized
+	if (!global.__socketio && event.platform?.server) {
+		try {
+			console.log('Initializing Socket.IO from hooks...');
+			initSocketIO(event.platform.server);
+			console.log('Socket.IO initialization from hooks completed');
+		} catch (error) {
+			console.error('Failed to initialize Socket.IO from hooks:', error);
+		}
 	}
 
 	const lang =

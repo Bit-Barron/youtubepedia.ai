@@ -3,13 +3,13 @@ import { io, type Socket } from 'socket.io-client';
 
 export const initSocket = (userId: string): Socket | null => {
 	if (browser) {
-		const socketUrl = `${window.location.protocol}//${window.location.hostname}:3001`;
-
-		const socket = io(socketUrl, {
+		const socket = io(window.location.origin, {
+			path: '/socket.io',
 			auth: { userId },
 			reconnection: true,
 			reconnectionDelay: 1000,
-			reconnectionAttempts: 5
+			reconnectionAttempts: 5,
+			transports: ['websocket', 'polling']
 		});
 
 		socket.on('connect', () => {

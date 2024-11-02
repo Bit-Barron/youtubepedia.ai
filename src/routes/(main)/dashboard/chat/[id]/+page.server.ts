@@ -1,4 +1,4 @@
-import { error, fail, type Actions } from '@sveltejs/kit';
+import { error, fail } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import prisma from '@/utils/prisma';
 import { getIO } from '@/server/socket';
@@ -67,8 +67,13 @@ export const actions = {
 				}
 			});
 
-			const io = getIO();
-			io.to(userId).emit('new-question', questionChat);
+			// Emit the question event
+			try {
+				const io = getIO();
+				io.to(userId).emit('new-question', questionChat);
+			} catch (socketError) {
+				console.error('Socket error (non-fatal):', socketError);
+			}
 
 			const response = await fetch('/api/ask', {
 				method: 'POST',
@@ -108,7 +113,13 @@ export const actions = {
 				}
 			});
 
-			io.to(userId).emit('new-answer', answerChat);
+			// Emit the answer event
+			try {
+				const io = getIO();
+				io.to(userId).emit('new-answer', answerChat);
+			} catch (socketError) {
+				console.error('Socket error for answer (non-fatal):', socketError);
+			}
 
 			return {
 				success: true,
@@ -123,4 +134,4 @@ export const actions = {
 			});
 		}
 	}
-} satisfies Actions;
+};
