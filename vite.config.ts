@@ -11,10 +11,15 @@ const webSocketServer = {
 
 		const io = new Server(server.httpServer, {
 			cors: {
-				origin: '*',
+				origin: ['http://localhost:3000', 'https://youtubepedia.barron.agency'],
 				methods: ['GET', 'POST'],
-				credentials: true
-			}
+				credentials: true,
+				allowedHeaders: ['Content-Type', 'Authorization']
+			},
+			path: '/socket.io',
+			transports: ['websocket', 'polling'],
+			pingTimeout: 60000,
+			pingInterval: 25000
 		} as Partial<ServerOptions>);
 
 		io.on('connection', (socket) => {
@@ -26,9 +31,18 @@ const webSocketServer = {
 				console.log(`User ${userId} joined their room`);
 			}
 
+			socket.on('error', (error) => {
+				console.error('Socket error:', error);
+			});
+
 			socket.on('disconnect', () => {
 				console.log('Client disconnected', socket.id);
 			});
+		});
+
+		// Debug Event Handler
+		io.engine?.on('connection_error', (err) => {
+			console.error('Connection error:', err);
 		});
 	}
 };
@@ -36,6 +50,13 @@ const webSocketServer = {
 export default defineConfig({
 	plugins: [sveltekit(), webSocketServer],
 	server: {
-		port: 3000
+		port: 3000,
+		host: true,
+		cors: true,
+		proxy: {
+			'/socket.io': {
+				target: 'ws://localhost:3000'
+			}
+		}
 	}
 });
