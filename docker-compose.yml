@@ -31,12 +31,6 @@ services:
       - 'traefik.http.middlewares.youtubepedia-ws.headers.customrequestheaders.Upgrade=websocket'
       - 'traefik.http.middlewares.youtubepedia-ws.headers.customrequestheaders.Connection=Upgrade'
       - 'traefik.http.routers.youtubepedia.middlewares=youtubepedia-ws'
-      # CORS Headers
-      - 'traefik.http.middlewares.youtubepedia-cors.headers.accesscontrolallowmethods=GET,POST,PUT,DELETE,OPTIONS'
-      - 'traefik.http.middlewares.youtubepedia-cors.headers.accesscontrolalloworiginlist=*'
-      - 'traefik.http.middlewares.youtubepedia-cors.headers.accesscontrolallowcredentials=true'
-      - 'traefik.http.middlewares.youtubepedia-cors.headers.accesscontrolallowheaders=*'
-      - 'traefik.http.routers.youtubepedia.middlewares=youtubepedia-ws,youtubepedia-cors'
 
 networks:
   proxy:
