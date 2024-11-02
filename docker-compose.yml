@@ -21,21 +21,11 @@ services:
       - proxy
     labels:
       - 'traefik.enable=true'
-      # Main application route
       - 'traefik.http.routers.youtubepedia.rule=Host(`youtubepedia.barron.agency`)'
       - 'traefik.http.routers.youtubepedia.entrypoints=websecure'
       - 'traefik.http.routers.youtubepedia.tls.certresolver=letsencrypt'
       - 'traefik.http.services.youtubepedia.loadbalancer.server.port=3000'
-      # WebSocket route
-      - 'traefik.http.routers.youtubepedia-ws.rule=Host(`youtubepedia.barron.agency`) && PathPrefix(`/socket.io`)'
-      - 'traefik.http.routers.youtubepedia-ws.entrypoints=websecure'
-      - 'traefik.http.routers.youtubepedia-ws.tls.certresolver=letsencrypt'
-      - 'traefik.http.services.youtubepedia-ws.loadbalancer.server.port=3000'
-      # Enable WebSocket protocol
-      - 'traefik.http.middlewares.sio.headers.customrequestheaders.X-Forwarded-Proto=https'
-      - 'traefik.http.routers.youtubepedia-ws.middlewares=sio'
-
-networks:
-  proxy:
-    external: false
-    name: proxy
+      # WebSocket configuration
+      - 'traefik.http.middlewares.youtubepedia-websocket.replacepathregex.regex=^/socket.io/(.*)'
+      - 'traefik.http.middlewares.youtubepedia-websocket.replacepathregex.replacement=/socket.io/$$1'
+      - 'traefik.http.routers.youtubepedia.middlewares=youtubepedia-websocket'
