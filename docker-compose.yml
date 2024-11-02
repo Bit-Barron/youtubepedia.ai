@@ -25,7 +25,7 @@ services:
       - 'traefik.http.routers.youtubepedia.entrypoints=websecure'
       - 'traefik.http.routers.youtubepedia.tls.certresolver=letsencrypt'
       - 'traefik.http.services.youtubepedia.loadbalancer.server.port=3000'
-      # WebSocket configuration
-      - 'traefik.http.middlewares.youtubepedia-websocket.replacepathregex.regex=^/socket.io/(.*)'
-      - 'traefik.http.middlewares.youtubepedia-websocket.replacepathregex.replacement=/socket.io/$$1'
-      - 'traefik.http.routers.youtubepedia.middlewares=youtubepedia-websocket'
+networks:
+  proxy:
+    external: false
+    name: proxy
