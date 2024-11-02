@@ -17,10 +17,7 @@ export const initSocketIO = (httpServer: HTTPServer): Promise<Server> => {
 						methods: ['GET', 'POST'],
 						credentials: true
 					},
-					transports: ['websocket', 'polling'],
-					// Add ping timeout and interval settings
-					pingTimeout: 60000,
-					pingInterval: 25000
+					transports: ['websocket', 'polling']
 				});
 
 				io.on('connection', (socket) => {
@@ -32,13 +29,8 @@ export const initSocketIO = (httpServer: HTTPServer): Promise<Server> => {
 						console.log(`User ${userId} joined their room`);
 					}
 
-					// Add error handling
-					socket.on('error', (error) => {
-						console.error('Socket error:', error);
-					});
-
-					socket.on('disconnect', (reason) => {
-						console.log(`Client disconnected (${reason})`, socket.id);
+					socket.on('disconnect', () => {
+						console.log('Client disconnected', socket.id);
 					});
 				});
 
