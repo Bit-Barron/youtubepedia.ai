@@ -2,27 +2,11 @@
 import { Server } from 'socket.io';
 import type { Server as HTTPServer } from 'http';
 import { dev } from '$app/environment';
+import type { ServerOptions } from 'socket.io';
 
-// Access the global io instance
 declare global {
 	var __socketio: Server | null;
 }
-
-export const getIO = (): Server => {
-	if (dev) {
-		// In development, use the Vite-initialized socket
-		if (!global.__socketio) {
-			throw new Error('Socket.IO not initialized yet');
-		}
-		return global.__socketio;
-	} else {
-		// In production, initialize normally
-		if (!global.__socketio) {
-			throw new Error('Socket.IO not initialized yet');
-		}
-		return global.__socketio;
-	}
-};
 
 export const initSocketIO = (httpServer: HTTPServer): void => {
 	if (!global.__socketio) {
@@ -34,11 +18,27 @@ export const initSocketIO = (httpServer: HTTPServer): void => {
 				methods: ['GET', 'POST'],
 				credentials: true
 			},
-			transports: ['websocket', 'polling']
+			transports: ['polling', 'websocket'],
+			allowUpgrades: true,
+			upgradeTimeout: 10000,
+			pingInterval: 10000,
+			pingTimeout: 5000,
+			cookie: {
+				name: 'io',
+				path: '/',
+				httpOnly: true,
+				sameSite: 'strict'
+			},
+			allowEIO3: true,
+			connectTimeout: 45000
+		} as Partial<ServerOptions>);
+
+		io.engine.on('connection_error', (err) => {
+			console.log('Connection error:', err);
 		});
 
 		io.on('connection', (socket) => {
-			console.log('Client connected', socket.id);
+			console.log('Client connected', socket.id, 'transport:', socket.conn.transport.name);
 
 			const userId = socket.handshake.auth.userId;
 			if (userId) {
@@ -46,12 +46,19 @@ export const initSocketIO = (httpServer: HTTPServer): void => {
 				console.log(`User ${userId} joined their room`);
 			}
 
-			socket.on('disconnect', () => {
-				console.log('Client disconnected', socket.id);
+			socket.on('disconnect', (reason) => {
+				console.log('Client disconnected', socket.id, 'reason:', reason);
 			});
 		});
 
 		global.__socketio = io;
 		console.log('Socket.IO server initialized successfully');
 	}
+};
+
+export const getIO = (): Server => {
+	if (!global.__socketio) {
+		throw new Error('Socket.IO not initialized');
+	}
+	return global.__socketio;
 };

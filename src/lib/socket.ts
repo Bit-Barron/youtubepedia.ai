@@ -9,15 +9,26 @@ export const initSocket = (userId: string): Socket | null => {
 			reconnection: true,
 			reconnectionDelay: 1000,
 			reconnectionAttempts: 5,
-			transports: ['websocket', 'polling']
+			transports: ['polling', 'websocket'], // Start with polling first
+			upgrade: true,
+			rememberUpgrade: true,
+			timeout: 10000,
+			forceNew: true
 		});
 
 		socket.on('connect', () => {
-			console.log('Connected to socket server');
+			console.log('Connected to socket server with transport:', socket.io.engine.transport.name);
 		});
 
 		socket.on('connect_error', (error) => {
 			console.error('Socket connection error:', error);
+		});
+
+		socket.on('disconnect', (reason) => {
+			console.log('Disconnected:', reason);
+			if (reason === 'io server disconnect') {
+				socket.connect();
+			}
 		});
 
 		return socket;
